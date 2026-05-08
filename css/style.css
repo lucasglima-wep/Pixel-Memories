@@ -1,0 +1,1060 @@
+/* RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #0a0a0a;
+    color: white;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Efeito de grade neon */
+    background-image: radial-gradient(rgba(0, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+/* ==========================================
+   2. HEADER E NAVEGAÇÃO
+   ========================================== */
+.header {
+    width: 100%;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Container que envolve a imagem e o nome do site */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+    cursor: pointer;
+}
+
+/* A foto da logo em si */
+.logo-img {
+    width: 50px;           
+    height: 50px;
+    object-fit: contain;    
+    border-radius: 8px;     
+    
+    /* Efeito de brilho Neon Ciano */
+    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6)); 
+    
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Efeito ao passar o mouse na logo */
+.logo:hover .logo-img {
+    transform: scale(1.1) rotate(-5deg); 
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1)); 
+}
+
+/* Ajuste do nome do site ao lado da logo */
+.logo h1 {
+    font-size: 22px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif; 
+}
+
+/* Responsividade: Diminuir no celular */
+@media (max-width: 600px) {
+    .logo-img {
+        width: 40px;
+        height: 40px;
+    }
+    .logo h1 {
+        font-size: 18px;
+    }
+}
+
+/* AJUSTE NA GALERIA */
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 120px 8% 50px 8%;
+    max-width: 1400px;
+    margin: 0 auto;
+    flex: 1; 
+}
+
+
+
+    
+    /* SCROLLBAR */
+    
+    ::-webkit-scrollbar{
+    width:10px;
+    }
+    
+    ::-webkit-scrollbar-track{
+    background:#111;
+    }
+    
+    ::-webkit-scrollbar-thumb{
+    background:cyan;
+    border-radius:10px;
+    }
+    
+    /* HEADER */
+    
+    .header{
+    width:100%;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1000;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+    
+    /* LOGO */
+    
+    .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    }
+    
+    .logo i{
+    font-size:28px;
+    color:cyan;
+    }
+    
+    .logo h1{
+    font-size:26px;
+    font-weight:600;
+    color:white;
+    }
+    
+    /* MENU */
+    
+    .menu{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    }
+    
+    .menu a{
+    text-decoration:none;
+    color:white;
+    font-size:15px;
+    transition:0.3s;
+    position:relative;
+    }
+    
+    .menu a:hover{
+    color:cyan;
+    }
+    
+    /* LINHA ANIMADA */
+    
+    .menu a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-5px;
+    width:0%;
+    height:2px;
+    background:cyan;
+    transition:0.3s;
+    }
+    
+    .menu a:hover::after{
+    width:100%;
+    }
+    
+    /* BOTÃO ADMIN */
+    
+    .btn-admin{
+    padding:10px 18px;
+    background:cyan;
+    color:#000 !important;
+    border-radius:30px;
+    font-weight:600;
+    }
+    
+    .btn-admin:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 20px cyan;
+    }
+    
+    /* HERO */
+    
+    .hero{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    position:relative;
+    background:
+    linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+    url("../img/fotos/fundo.jpg");
+    
+    background-size:cover;
+    background-position:center;
+    padding:20px;
+    }
+    
+    /* HERO CONTENT */
+    
+    .hero-content{
+    max-width:700px;
+    z-index:2;
+    animation:fade 1.5s ease;
+    }
+    
+    .hero-content h2{
+    font-size:70px;
+    margin-bottom:20px;
+    line-height:1.1;
+    }
+    
+    .hero-content p{
+    font-size:18px;
+    color:#ccc;
+    margin-bottom:30px;
+    }
+    
+    /* BOTÕES */
+    
+    .hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    }
+    
+    .btn{
+    padding:14px 35px;
+    background:cyan;
+    color:#000;
+    text-decoration:none;
+    font-weight:600;
+    border-radius:50px;
+    transition:0.4s;
+    }
+    
+    .btn:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 30px cyan;
+    }
+    
+    .btn-outline{
+    padding:14px 35px;
+    border:2px solid cyan;
+    color:cyan;
+    text-decoration:none;
+    font-weight:600;
+    border-radius:50px;
+    transition:0.4s;
+    }
+    
+    .btn-outline:hover{
+    background:cyan;
+    color:#000;
+    box-shadow:0 0 30px cyan;
+    }
+    
+    /* SEÇÃO */
+    
+    .categorias{
+    padding:100px 8%;
+    }
+    
+    /* TITULO */
+    
+    .titulo-section{
+    text-align:center;
+    margin-bottom:50px;
+    }
+    
+    .titulo-section h2{
+    font-size:40px;
+    margin-bottom:10px;
+    }
+    
+    .titulo-section p{
+    color:#aaa;
+    }
+    
+    /* CARDS */
+    
+    .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+    }
+    
+    /* CARD */
+    
+    .card{
+    background:#141414;
+    border-radius:20px;
+    overflow:hidden;
+    transition:0.5s;
+    position:relative;
+    border:1px solid rgba(255,255,255,0.05);
+    }
+    
+    .card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 25px rgba(0,255,255,0.2);
+    }
+    
+    /* IMAGEM */
+    
+    .card-img{
+    overflow:hidden;
+    }
+    
+    .card-img img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    transition:0.5s;
+    }
+    
+    .card:hover img{
+    transform:scale(1.1);
+    }
+    
+    /* INFO */
+    
+    .card-info{
+    padding:25px;
+    }
+    
+    .card-info h3{
+    font-size:25px;
+    margin-bottom:10px;
+    }
+    
+    .card-info p{
+    color:#aaa;
+    margin-bottom:20px;
+    line-height:1.5;
+    }
+    
+    /* BOTÃO CARD */
+    
+    .card-info button{
+    padding:12px 25px;
+    border:none;
+    background:cyan;
+    color:#000;
+    font-weight:600;
+    border-radius:30px;
+    cursor:pointer;
+    transition:0.4s;
+    }
+    
+    .card-info button:hover{
+    box-shadow:0 0 20px cyan;
+    transform:scale(1.05);
+    }
+    
+  /* ============================================================
+   RODAPÉ (FOOTER) - CORRIGIDO
+   ============================================================ */
+
+
+
+footer {
+    padding: 40px 8%;
+    background: #0d0d0d;
+    display: flex;
+    justify-content: space-between; /* Separa o texto dos ícones */
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebrar linha no telemóvel */
+    gap: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 50px;
+    width: 100%;
+}
+
+footer p {
+    color: #888;
+    font-size: 14px;
+}
+
+/* REDES SOCIAIS */
+.social {
+    display: flex;
+    gap: 15px;
+}
+
+.social i {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social i:hover {
+    background: cyan;
+    color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px cyan;
+    border-color: cyan;
+}
+
+/* AJUSTE PARA TELEMÓVEL */
+@media(max-width: 600px) {
+    footer {
+        flex-direction: column; /* Coloca um por cima do outro */
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .social {
+        justify-content: center;
+    }
+}
+    
+    /* ANIMAÇÃO */
+    
+    @keyframes fade{
+    
+    from{
+    opacity:0;
+    transform:translateY(40px);
+    }
+    
+    to{
+    opacity:1;
+    transform:translateY(0);
+    }
+    
+    }
+    
+    /* RESPONSIVO */
+    
+    @media(max-width:900px){
+    
+    .hero-content h2{
+    font-size:50px;
+    }
+    
+    .header{
+    padding:20px;
+    flex-direction:column;
+    gap:15px;
+    }
+    
+    .menu{
+    flex-wrap:wrap;
+    justify-content:center;
+    }
+    
+    .galeria{
+    columns:2;
+    }
+    
+    }
+    
+    @media(max-width:600px){
+    
+    .hero-content h2{
+    font-size:38px;
+    }
+    
+    .hero-content p{
+    font-size:15px;
+    }
+    
+    .cards{
+    grid-template-columns:1fr;
+    }
+    
+    .galeria{
+    columns:1;
+    padding:50px 20px;
+    }
+    
+    footer{
+    flex-direction:column;
+    text-align:center;
+    }
+    
+    }
+
+/* ============================================================
+   TOPO GALERIA - ESTILIZAÇÃO
+   ============================================================ */
+
+.topo-galeria {
+    width: 100%;
+    padding: 160px 8% 40px 8%; /* Padding superior maior para compensar o Header fixo */
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(0, 255, 255, 0.05), transparent);
+    position: relative;
+}
+
+.topo-galeria h2 {
+    font-size: 50px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Linha decorativa abaixo do título */
+.topo-galeria h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: cyan;
+    border-radius: 2px;
+    box-shadow: 0 0 15px cyan;
+}
+
+.topo-galeria p {
+    font-size: 18px;
+    color: #aaa;
+    max-width: 600px;
+    margin: 20px auto 0 auto;
+    line-height: 1.6;
+}
+
+/* Ajuste para dispositivos móveis */
+@media(max-width: 600px) {
+    .topo-galeria {
+        padding: 140px 20px 30px 20px;
+    }
+
+    .topo-galeria h2 {
+        font-size: 32px;
+    }
+
+    .topo-galeria p {
+        font-size: 15px;
+    }
+}
+
+/* ============================================================
+   GALERIA - VERSÃO FINAL ORGANIZADA
+   ============================================================ */
+
+.galeria {
+    display: grid;
+    /* Cria colunas automáticas de no mínimo 300px. Se a tela diminuir, ele ajusta as colunas. */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 120px 8% 100px 8%; /* Espaço para não ficar atrás do header fixo */
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* CONTAINER DE CADA FOTO */
+.foto {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #141414;
+    aspect-ratio: 4 / 4; 
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+}
+
+.foto:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 255, 255, 0.2);
+    z-index: 10;
+}
+
+/* IMAGEM */
+.foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+    transition: transform 0.6s ease, filter 0.6s ease;
+}
+
+.foto:hover img {
+    transform: scale(1.1);
+    filter: brightness(0.6);
+}
+
+/* OVERLAY (TEXTO E BOTÃO) */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+    padding: 25px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none; 
+}
+
+.foto:hover .overlay {
+    opacity: 1;
+}
+
+.overlay h3 {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 5px;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+}
+
+.overlay p {
+    font-size: 14px;
+    color: cyan;
+    margin-bottom: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transform: translateY(20px);
+    transition: transform 0.4s ease 0.1s;
+}
+
+.foto:hover .overlay h3, 
+.foto:hover .overlay p {
+    transform: translateY(0);
+}
+
+/* BOTÃO DE EXPANDIR DENTRO DO OVERLAY */
+.overlay button {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: cyan;
+    color: #000;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px cyan;
+}
+
+/* RESPONSIVIDADE */
+@media(max-width: 900px) {
+    .galeria {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        padding: 100px 5%;
+    }
+}
+
+@media(max-width: 600px) {
+    .galeria {
+        grid-template-columns: 1fr; /* Uma foto por linha no celular */
+        padding: 100px 20px;
+    }
+    .foto {
+        aspect-ratio: 1 / 1; /* Fotos quadradas no celular */
+    }
+}
+    
+    /* ========================= */
+    /* LIGHTBOX */
+    /* ========================= */
+    
+    .lightbox{
+    position:fixed;
+    
+    top:0;
+    left:0;
+    
+    width:100%;
+    height:100vh;
+    
+    background:
+    rgba(0,0,0,0.95);
+    
+    display:none;
+    
+    justify-content:center;
+    align-items:center;
+    
+    z-index:9999;
+    
+    padding:20px;
+    }
+    
+    /* IMAGEM LIGHTBOX */
+    
+    .lightbox-img{
+    max-width:90%;
+    max-height:90vh;
+    
+    border-radius:20px;
+    
+    animation:zoom 0.4s ease;
+    }
+    
+    /* BOTÃO FECHAR */
+    
+    .close{
+    position:absolute;
+    
+    top:30px;
+    right:40px;
+    
+    font-size:35px;
+    
+    color:white;
+    
+    cursor:pointer;
+    
+    transition:0.3s;
+    }
+    
+    .close:hover{
+    color:cyan;
+    transform:rotate(90deg);
+    }
+    
+    /* ANIMAÇÃO */
+    
+    @keyframes zoom{
+    
+    from{
+    transform:scale(0.7);
+    opacity:0;
+    }
+    
+    to{
+    transform:scale(1);
+    opacity:1;
+    }
+    
+    }
+    
+    /* ========================= */
+    /* RESPONSIVO */
+    /* ========================= */
+    
+    @media(max-width:900px){
+    
+    .galeria{
+    
+    grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+    
+    }
+    
+    }
+    
+    /* CELULAR */
+    
+    @media(max-width:600px){
+    
+    .galeria{
+    padding:20px;
+    gap:20px;
+    }
+    
+    .foto img{
+    min-height:250px;
+    }
+    
+    .overlay h3{
+    font-size:22px;
+    }
+    
+    .overlay p{
+    font-size:14px;
+    }
+    
+    }
+
+    /* ========================= */
+/* LIGHTBOX TELA CHEIA */
+/* ========================= */
+
+.lightbox{
+    position:fixed;
+    
+    top:0;
+    left:0;
+    
+    width:100%;
+    height:100vh;
+    
+    background:rgba(0,0,0,0.98);
+    
+    display:none;
+    
+    justify-content:center;
+    align-items:center;
+    
+    z-index:99999;
+    
+    backdrop-filter:blur(8px);
+    
+    padding:20px;
+    }
+    
+    /* IMAGEM */
+    
+    .lightbox-img{
+    
+    width:auto;
+    height:auto;
+    
+    max-width:100%;
+    max-height:100vh;
+    
+    object-fit:contain;
+    
+    border-radius:15px;
+    
+    animation:zoom 0.4s ease;
+    }
+    
+    /* FECHAR */
+    
+    .close{
+    
+    position:absolute;
+    
+    top:20px;
+    right:30px;
+    
+    font-size:40px;
+    
+    color:white;
+    
+    cursor:pointer;
+    
+    z-index:100000;
+    
+    transition:0.3s;
+    }
+    
+    .close:hover{
+    
+    color:cyan;
+    
+    transform:rotate(90deg);
+    
+    }
+    
+    /* ANIMAÇÃO */
+    
+    @keyframes zoom{
+    
+    from{
+    
+    transform:scale(0.5);
+    opacity:0;
+    
+    }
+    
+    to{
+    
+    transform:scale(1);
+    opacity:1;
+    
+    }
+    
+    }
+
+    .admin-container{
+display:flex;
+gap:40px;
+padding:120px 8%;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+/* BOX PRINCIPAL */
+
+.admin-box{
+background:#141414;
+padding:30px;
+border-radius:20px;
+width:400px;
+box-shadow:0 0 30px rgba(0,255,255,0.1);
+}
+
+.admin-box h2{
+margin-bottom:10px;
+color:cyan;
+}
+
+.admin-box p{
+color:#aaa;
+margin-bottom:20px;
+}
+
+/* FORM */
+
+.admin-box form{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.admin-box label{
+font-size:14px;
+color:#ccc;
+}
+
+/* INPUTS */
+
+.admin-box input,
+.admin-box select{
+padding:12px;
+border:none;
+border-radius:10px;
+background:#222;
+color:white;
+outline:none;
+}
+
+/* BOTÃO */
+
+.admin-box button{
+padding:14px;
+border:none;
+border-radius:10px;
+background:cyan;
+color:#000;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.admin-box button:hover{
+transform:translateY(-3px);
+box-shadow:0 0 20px cyan;
+}
+
+/* STATS */
+
+.admin-stats{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.stat{
+background:#141414;
+padding:20px;
+border-radius:15px;
+text-align:center;
+width:200px;
+transition:0.3s;
+}
+
+.stat:hover{
+transform:scale(1.05);
+}
+
+.stat i{
+font-size:30px;
+color:cyan;
+margin-bottom:10px;
+}
+
+.stat h3{
+margin-bottom:5px;
+}
+
+.stat p{
+color:#aaa;
+font-size:18px;
+}
+
+
+/* SISTEMA DE AVISOS */
+
+.alerta-escondido {
+    display: none;
+}
+
+.alerta-exibido {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid;
+    animation: surgindo 0.3s ease-out, tremer 0.4s ease-in-out;
+}
+
+/* Estilo para Erros (Vermelho) */
+.erro {
+    background-color: #ffe5e5;
+    color: #d63031;
+    border-color: #fab1a0;
+}
+
+/* Estilo para Sucesso (Verde) */
+.sucesso {
+    background-color: #e3f9e5;
+    color: #27ae60;
+    border-color: #2ecc71;
+}
+
+/* Animações */
+@keyframes surgindo {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tremer {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}

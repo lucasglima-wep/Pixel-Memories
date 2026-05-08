@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login Admin - Pixel Memories</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/login.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- FUNDO -->
+
+<div class="login-container">
+
+    <!-- CARD -->
+
+    <div class="login-box">
+        <div id="alerta" class="alerta-escondido">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    <span id="alerta-mensagem"></span>
+</div>
+
+        <div class="login-icon">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+
+        <h2>Login Admin</h2>
+
+        <p>Acesse o painel da galeria</p>
+
+        <!-- FORM -->
+
+        <form action="php/login.php" method="POST">
+
+            <!-- USUÁRIO -->
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-user"></i>
+
+                <input 
+                    type="text" 
+                    name="usuario" 
+                    placeholder="Usuário"
+                    autocomplete="username"
+                    required>
+
+            </div>
+
+            <!-- SENHA -->
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-key"></i>
+
+                <input 
+                    type="password" 
+                    name="senha" 
+                    placeholder="Senha"
+                    autocomplete="current-password"
+                    required>
+
+            </div>
+
+            <!-- BOTÃO -->
+
+            <button type="submit">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Entrar
+
+            </button>
+
+        </form>
+
+        <span class="footer-text">
+            © 2026 Pixel Memories
+        </span>
+
+    </div>
+
+</div>
+   
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status'); 
+    const erro = urlParams.get('erro');     
+    
+    const alerta = document.getElementById('alerta');
+    const mensagem = document.getElementById('alerta-mensagem');
+
+    // Se for um erro
+    if (erro) {
+        alerta.classList.remove('alerta-escondido');
+        alerta.classList.add('alerta-exibido', 'erro');
+
+        if (erro === 'senha') {
+            mensagem.innerText = "Senha incorreta. Tente novamente.";
+        } else if (erro === 'usuario') {
+            mensagem.innerText = "Usuário não encontrado.";
+        } else if (erro === 'campos') {
+            mensagem.innerText = "Por favor, preencha todos os campos.";
+        }
+    }
+
+    // Se for um sucesso (ex: logout ou contato enviado)
+    if (status === 'sucesso') {
+        alerta.classList.remove('alerta-escondido');
+        alerta.classList.add('alerta-exibido', 'sucesso');
+        alerta.querySelector('i').className = "fa-solid fa-circle-check"; // Muda o ícone
+        mensagem.innerText = "Ação realizada com sucesso!";
+    }
+
+    // Limpar a URL após 3 segundos para o aviso não "travar" na tela
+    if (erro || status) {
+        setTimeout(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 3000);
+    }
+</script>
+
+
+</body>
+</html>
