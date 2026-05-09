@@ -1,14 +1,18 @@
-CREATE DATABASE pixel_memories;
+CREATE DATABASE IF NOT EXISTS pixel_memories
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
 
 USE pixel_memories;
 
-CREATE TABLE admins (
-id INT AUTO_INCREMENT PRIMARY KEY,
-usuario VARCHAR(50),
-senha VARCHAR(255)
-);  
+/* 👤 TABELA DE ADMINS */
+CREATE TABLE IF NOT EXISTS admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-
+/* 📸 TABELA DE FOTOS */
 CREATE TABLE IF NOT EXISTS fotos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
@@ -16,5 +20,3 @@ CREATE TABLE IF NOT EXISTS fotos (
     caminho_arquivo VARCHAR(255) NOT NULL,
     data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-INSERT INTO admins(usuario,senha)
-VALUES('admin','123');

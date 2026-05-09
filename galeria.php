@@ -1,4 +1,7 @@
 <?php
+
+ var_dump($foto); 
+ 
 // 1. Conectar ao banco de dados
 include "php/conexao.php";
 
@@ -16,6 +19,7 @@ $result = $conn->query($sql);
     <title>Galeria - Pixel Memories</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/galeria,celular.css">
+    <link rel="icon" href="fotos/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -25,8 +29,8 @@ $result = $conn->query($sql);
 <body>
 
     <header class="header">
-       <div class="logo">
-        <img src="fotos/logo do site.png" alt="Pixel Memories" class="logo-img">
+    <div class="logo">
+        <img src="fotos/logo.png" alt="Pixel Memories" class="logo-img">
         <h1>Pixel Memories</h1>
     </div>
         <nav class="menu">

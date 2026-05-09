@@ -217,8 +217,8 @@ body {
     text-align:center;
     position:relative;
     background:
-    linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
-    url("../img/fotos/fundo.jpg");
+    linear-gradient(rgba(0, 0, 0, 0.747),rgba(0, 0, 0, 0.438)),
+    url("../fotos/fundo.png");
     
     background-size:cover;
     background-position:center;

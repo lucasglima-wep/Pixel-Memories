@@ -1,0 +1,409 @@
+
+
+/* LOGO */
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo i{
+    color:#4da3ff;
+    font-size:28px;
+}
+
+.logo h1{
+    font-size:24px;
+}
+
+/* MENU */
+.menu{
+    display:flex;
+    gap:25px;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.menu a:hover,
+.menu .ativo{
+    color:#4da3ff;
+}
+
+
+/* ALERTA */
+.alerta-escondido{
+    display:none;
+}
+
+.alerta-exibido{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:25px;
+    font-weight:500;
+}
+
+.erro{
+    background:#3b1111;
+    color:#ff6b6b;
+}
+
+.sucesso{
+    background:#113b1f;
+    color:#55ef88;
+}
+
+/* TÍTULOS */
+h2{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+p{
+    color:#aaa;
+    margin-bottom:25px;
+}
+
+/* FORMULÁRIO */
+form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+label{
+    font-weight:500;
+}
+
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#242424;
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border:2px solid #4da3ff;
+}
+
+/* BOTÃO */
+button{
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#4da3ff;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#2d8cff;
+}
+
+/* GALERIA E GRID */
+/* Container externo - garante que a seção ocupe a largura toda */
+.galeria-admin {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza a admin-box horizontalmente */
+    /
+}
+
+/* A caixa escura (Fotos Enviadas) */
+.admin-box {
+    width: 100%;
+    max-width: 900px;      
+    background: black;    
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #2b2b2b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* Centraliza o título H2 dentro da caixa */
+}
+
+/* Onde os cards PHP aparecem */
+.grid-fotos {
+    display: flex;
+    flex-wrap: wrap;        /* Permite que as fotos quebrem linha */
+    justify-content: center; /* Centraliza os cards das fotos no meio */
+    gap: 20px;
+    width: 100%;
+    margin-top: 25px;
+     overflow-x:auto; /* permite scroll horizontal */
+}
+
+
+/* Título da seção */
+.admin-box h2 {
+    text-align: center;
+    width: 100%;
+    justify-content: center; /* Se estiver usando display: flex no h2 */
+    margin-bottom: 20px;
+}   
+
+.card-foto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.card-foto img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    display: block; /* Remove espaços vazios abaixo da imagem */
+}
+/* INFO */
+.card-info{
+    padding:18px;
+}
+
+.card-info h3{
+    font-size:20px;
+    margin-bottom:8px;
+}
+
+.card-info p{
+    color:#999;
+    margin-bottom:18px;
+}
+
+/* AÇÕES */
+.acoes{
+    display:flex;
+    gap:12px;
+}
+
+.btn-editar,
+.btn-excluir{
+    flex:1;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.btn-editar{
+    background:#3498db;
+}
+
+.btn-editar:hover{
+    background:#2585c7;
+}
+
+.btn-excluir{
+    background:#e74c3c;
+}
+
+.btn-excluir:hover{
+    background:#cf3e2f;
+}
+
+/* RESPONSIVO */
+@media(max-width:768px){
+
+    .header{
+        flex-direction:column;
+        gap:20px;
+        text-align:center;
+    }
+
+    .menu{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .admin-box{
+        padding:25px;
+    }
+}
+
+/* BOTÃO EXCLUIR COM ANIMAÇÃO */
+.anim-delete{
+    position:relative;
+    overflow:hidden;
+}
+
+/* efeito hover */
+.anim-delete:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px rgba(231, 76, 60, 0.6);
+}
+
+/* efeito clique */
+.anim-delete:active{
+    transform:scale(0.92);
+}
+
+/* efeito "onda" */
+.anim-delete::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:0;
+    height:0;
+    background:rgba(255,255,255,0.3);
+    border-radius:50%;
+    transform:translate(-50%, -50%);
+    transition:width 0.4s ease, height 0.4s ease, opacity 0.6s;
+    opacity:0;
+}
+
+.anim-delete:active::after{
+    width:200px;
+    height:200px;
+    opacity:0;
+}
+
+
+
+
+/* ALERTA CENTRAL NA TELA */
+.alerta{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%) scale(0.8);
+    background:#1e1e1e;
+    padding:20px 25px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:600;
+    color:white;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    opacity:0;
+    pointer-events:none;
+    transition:0.3s ease;
+    z-index:9999;
+}
+
+/* quando aparece */
+.alerta.show{
+    opacity:1;
+    transform:translate(-50%, -50%) scale(1);
+}
+
+/* erro */
+.alerta.erro{
+    background:#3b1111;
+    color:#ff6b6b;
+}
+
+/* sucesso */
+.alerta.sucesso{
+    background:#113b1f;
+    color:#55ef88;
+}
+
+/* animação do ícone */
+.alerta i{
+    font-size:20px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-content{
+    background:#1e1e1e;
+    padding:25px;
+    border-radius:15px;
+    width:90%;
+    max-width:400px;
+    animation:zoom 0.3s ease;
+}
+
+@keyframes zoom{
+    from{transform:scale(0.7); opacity:0;}
+    to{transform:scale(1); opacity:1;}
+}
+
+.fechar{
+    float:right;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.modal-content input,
+.modal-content select{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2a2a2a;
+    color:white;
+}
+
+.modal-content button{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#3498db;
+    color:white;
+    cursor:pointer;
+}
+
+
+
+.card-contador{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#202020;
+    padding:20px;
+    border-radius:15px;
+    margin-top:40px; 
+    margin-bottom:20px;
+    border:1px solid #2b2b2b;
+}
+.card-contador i{
+    font-size:30px;
+    color:#4da3ff;
+}
+
+.card-contador h3{
+    font-size:28px;
+    margin:0;
+}
+
+.card-contador p{
+    margin:0;
+    color:#aaa;
+}
