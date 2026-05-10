@@ -5,6 +5,8 @@
 // 1. Conectar ao banco de dados
 include "php/conexao.php";
 
+
+
 // 2. Buscar as fotos no banco (ordenadas pelas mais recentes)
 $sql = "SELECT * FROM fotos ORDER BY id DESC";
 $result = $conn->query($sql);
@@ -15,10 +17,12 @@ $result = $conn->query($sql);
 
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeria - Pixel Memories</title>
+
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/galeria,celular.css">
+    <link rel="stylesheet" href="css/galeri,celular.css">
     <link rel="icon" href="fotos/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +38,7 @@ $result = $conn->query($sql);
         <h1>Pixel Memories</h1>
     </div>
         <nav class="menu">
-            <a href="index.html">Início</a>
+            <a href="index.php">Início</a>
             <a href="galeria.php" class="ativo">Galeria</a>
             <a href="sobre.html">Sobre</a>
             <a href="contato.html">Contato</a>
@@ -46,32 +50,65 @@ $result = $conn->query($sql);
         <p>Explore momentos incríveis registrados pela câmera.</p>
     </section>
 
-    <section class="galeria">
+<div class="filtro-categorias">
 
-        <?php
-        // 3. Verificar se existem fotos no banco
-        if ($result && $result->num_rows > 0) {
-            // 4. Rodar o loop para cada foto encontrada
-            while($foto = $result->fetch_assoc()) {
-                ?>
-                <div class="foto">
-                    <img src="<?php echo $foto['caminho_arquivo']; ?>" alt="<?php echo $foto['categoria']; ?>">
+    <button class="filtro ativo" data-id="0">Todas</button>
 
-                    <div class="overlay">
-                        <h3><?php echo $foto['titulo']; ?></h3>
-                        <p><?php echo $foto['categoria']; ?></p>
-                        <button>
-                            <i class="fa-solid fa-expand"></i>
-                        </button>
-                    </div>
-                </div>
-                <?php
-            }
-        } else {
-            // Mensagem caso não tenha nenhuma foto ainda
-            echo "<p style='grid-column: 1/-1; text-align: center; padding: 50px; opacity: 0.5;'>Nenhuma foto encontrada na galeria.</p>";
-        }
-        ?>
+    <?php
+    $sqlCat = "SELECT * FROM categorias ORDER BY nome ASC";
+    $resCat = $conn->query($sqlCat);
+
+    while($cat = $resCat->fetch_assoc()) {
+    ?>
+
+        <button class="filtro" data-id="<?php echo $cat['id']; ?>">
+            <?php echo $cat['nome']; ?>
+        </button>
+
+    <?php } ?>
+
+</div>
+
+<section class="galeria">
+
+<?php
+if ($result && $result->num_rows > 0) {
+
+    while($foto = $result->fetch_assoc()) {
+?>
+
+<div class="foto" data-categoria="<?php echo $foto['categoria_id']; ?>">
+
+    <img src="<?php echo $foto['caminho_arquivo']; ?>" 
+            alt="<?php echo htmlspecialchars($foto['titulo']); ?>">
+
+    <div class="overlay">
+
+        <h3><?php echo $foto['titulo']; ?></h3>
+
+        
+
+        <button>
+            <i class="fa-solid fa-expand"></i>
+        </button>
+
+    </div>
+
+</div>
+
+<?php
+    }
+
+} else {
+    echo "<p style='grid-column:1/-1;text-align:center;padding:50px;opacity:0.5;'>Nenhuma foto encontrada na galeria.</p>";
+}
+?>
+
+</section>
+
+</section>
+
+
 
     </section>
 
@@ -93,47 +130,96 @@ $result = $conn->query($sql);
         <a href="https://www.facebook.com/profile.php?id=100048787846437" target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-facebook"></i>
         </a>
-
-        <a href="https://github.com/lucasglima-wep" target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-github"></i>
         </a>
     </div>
 </footer>
 
-    <script>
-        const fotos = document.querySelectorAll('.foto');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const close = document.querySelector('.close');
+   <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const close = document.querySelector('.close');
 
-        fotos.forEach(foto => {
-            foto.addEventListener('click', () => {
-                const srcDaImagem = foto.querySelector('img').src;
-                lightbox.style.display = 'flex';
-                lightboxImg.src = srcDaImagem;
-            });
-        });
+    // 1. ABRIR LIGHTBOX (Usando delegação de evento para funcionar com o AJAX)
+    document.addEventListener('click', (e) => {
+        // Verifica se clicou na div .foto ou em qualquer elemento dentro dela (img, botão, etc)
+        const fotoCard = e.target.closest('.foto');
+        
+        if (fotoCard) {
+            const srcDaImagem = fotoCard.querySelector('img').src;
+            lightbox.style.display = 'flex';
+            lightboxImg.src = srcDaImagem;
 
-        function fecharLightbox() {
-            lightbox.style.display = 'none';
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
+            // Tenta colocar em TELA CHEIA (Fullscreen API)
+            if (lightbox.requestFullscreen) {
+                lightbox.requestFullscreen();
+            } else if (lightbox.webkitRequestFullscreen) { // Safari
+                lightbox.webkitRequestFullscreen();
+            } else if (lightbox.msRequestFullscreen) { // IE11
+                lightbox.msRequestFullscreen();
             }
         }
+    });
 
-        close.addEventListener('click', fecharLightbox);
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                fecharLightbox();
+    // 2. FECHAR LIGHTBOX
+    function fecharLightbox() {
+        lightbox.style.display = 'none';
+        // Sai do modo tela cheia se o navegador estiver nele
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
             }
-        });
+        }
+    }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                fecharLightbox();
-            }
+    close.addEventListener('click', fecharLightbox);
+    
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            fecharLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            fecharLightbox();
+        }
+    });
+
+    // 3. FILTROS VIA AJAX
+    const botoes = document.querySelectorAll('.filtro');
+    const galeria = document.querySelector('.galeria');
+
+    botoes.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Estilo ativo nos botões
+            botoes.forEach(b => b.classList.remove('ativo'));
+            this.classList.add('ativo');
+
+            const id = this.dataset.id;
+
+            fetch("galeria_ajax.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "categoria_id=" + id
+            })
+            .then(res => res.text())
+            .then(data => {
+                galeria.innerHTML = data;
+                // Nota: O clique nas fotos continuará funcionando aqui 
+                // porque usamos o document.addEventListener lá em cima.
+            });
         });
+    });
+</script>
+
     </script>
+
+
 
 </body>
 </html>

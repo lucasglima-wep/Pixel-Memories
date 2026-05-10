@@ -119,58 +119,131 @@ button:hover{
     background:#2d8cff;
 }
 
-/* GALERIA E GRID */
-/* Container externo - garante que a seção ocupe a largura toda */
-.galeria-admin {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Centraliza a admin-box horizontalmente */
-    /
-}
+/* GALERIA E GRID REFINADO */
 
-/* A caixa escura (Fotos Enviadas) */
+/* A caixa que contém tudo */
+/* 1. O Container Pai (Admin Box) */
 .admin-box {
-    width: 100%;
-    max-width: 900px;      
-    background: black;    
-    padding: 30px;
+    width: 30%;
+    max-width: 1100px;
+    margin: 20px auto;
+    background: #121212;
+    padding: 30px 15px; /* Padding 0 nas laterais para a galeria encostar se precisar */
     border-radius: 20px;
     border: 1px solid #2b2b2b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;    /* Centraliza o título H2 dentro da caixa */
+    overflow: hidden; 
 }
 
-/* Onde os cards PHP aparecem */
+@media screen and (max-width: 768px) { 
+    .admin-box {
+         width: 100%;
+        padding: 20px 15px; /* Reduz o padding lateral em telas menores */
+    }
+    
+}
+
+/* 2. O Título (Garantindo que ele mantenha o recuo mesmo com a box sem padding lateral) */
+.admin-box h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 0 30px; /* Recuo para o título não colar na borda */
+}
+
+/* 3. A Grid (Onde a mágica acontece) */
 .grid-fotos {
     display: flex;
-    flex-wrap: wrap;        /* Permite que as fotos quebrem linha */
-    justify-content: center; /* Centraliza os cards das fotos no meio */
+    flex-wrap: nowrap;
     gap: 20px;
-    width: 100%;
-    margin-top: 25px;
-     overflow-x:auto; /* permite scroll horizontal */
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    
+    /* Snap Scroll */
+    scroll-snap-type: x mandatory;
+    
+    /* ESTA É A SOLUÇÃO: */
+    padding: 10px 30px 20px 30px; /* Padding de 30px nas laterais INTERNAS do scroll */
 }
 
+/* 4. O Card (Ajuste de alinhamento) */
+.card-foto {
+    flex: 0 0 280px; 
+    min-width: 280px; /* Garante que o flex-basis seja respeitado */
+    background: #242424;
+    border-radius: 12px;
+    scroll-snap-align: start; /* Alinha o card no início do padding que criamos */
+}
 
-/* Título da seção */
-.admin-box h2 {
-    text-align: center;
-    width: 100%;
-    justify-content: center; /* Se estiver usando display: flex no h2 */
-    margin-bottom: 20px;
-}   
+/* 5. Ajuste na Barra de Rolagem para não flutuar estranho */
+.grid-fotos::-webkit-scrollbar {
+    height: 8px;
+}
+.grid-fotos::-webkit-scrollbar-track {
+    margin: 0 30px; /* Faz a barra de rolagem começar e terminar no mesmo alinhamento das fotos */
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+.card-foto {
+    flex: 0 0 280px; 
+    background: #000000;
+    border-radius: 12px;
+    scroll-snap-align: start; /* Alinha pelo início para não bugar a primeira foto */
+    
+    /* Impede que o card tente crescer ou diminuir */
+    min-width: 280px;
+}
+
+/* Estilização da Scrollbar (Essencial para o visual) */
+.grid-fotos::-webkit-scrollbar {
+    height: 8px; /* Altura da barra horizontal */
+}
+
+.grid-fotos::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+.grid-fotos::-webkit-scrollbar-thumb {
+    background: #4da3ff;
+    border-radius: 10px;
+    border: 2px solid #1a1a1a; /* Cria um efeito de respiro ao redor do thumb */
+}
+
+.grid-fotos::-webkit-scrollbar-thumb:hover {
+    background: #3580d5;
+}
+
+/* Ajuste no Card */
+.card-foto {
+    flex: 0 0 280px; 
+    background: #242424;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden; /* Garante que a imagem respeite o border-radius do card */
+    border: 1px solid #333;
+    scroll-snap-align: start; 
+}
 
 .card-foto:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transform: translateY(-8px);
+    border-color: #4da3ff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .card-foto img {
     width: 100%;
     height: 230px;
     object-fit: cover;
-    display: block; /* Remove espaços vazios abaixo da imagem */
+    display: block;
+    transition: 0.5s ease;
+}
+
+.card-foto:hover img {
+    scale: 1.05; /* Efeito de zoom leve na imagem ao passar o mouse */
 }
 /* INFO */
 .card-info{
@@ -183,7 +256,7 @@ button:hover{
 }
 
 .card-info p{
-    color:#999;
+    color:#c0baba;
     margin-bottom:18px;
 }
 
@@ -256,30 +329,6 @@ button:hover{
 .anim-delete:active{
     transform:scale(0.92);
 }
-
-/* efeito "onda" */
-.anim-delete::after{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:0;
-    height:0;
-    background:rgba(255,255,255,0.3);
-    border-radius:50%;
-    transform:translate(-50%, -50%);
-    transition:width 0.4s ease, height 0.4s ease, opacity 0.6s;
-    opacity:0;
-}
-
-.anim-delete:active::after{
-    width:200px;
-    height:200px;
-    opacity:0;
-}
-
-
-
 
 /* ALERTA CENTRAL NA TELA */
 .alerta{
@@ -406,4 +455,54 @@ button:hover{
 .card-contador p{
     margin:0;
     color:#aaa;
+}
+
+
+
+/* =========================
+   LOADING UPLOAD
+========================= */
+
+#loading{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.95);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+}
+
+.loader-box{
+    text-align:center;
+    color:#fff;
+}
+
+.spinner{
+    width:80px;
+    height:80px;
+    border:6px solid rgba(255,255,255,0.1);
+    border-top:6px solid cyan;
+    border-radius:50%;
+    animation: girar 1s linear infinite;
+    margin:0 auto 20px auto;
+    box-shadow:0 0 25px cyan;
+}
+
+.loader-box h2{
+    font-size:24px;
+    margin-bottom:10px;
+}
+
+.loader-box p{
+    color:#aaa;
+}
+
+@keyframes girar{
+    100%{
+        transform:rotate(360deg);
+    }
 }

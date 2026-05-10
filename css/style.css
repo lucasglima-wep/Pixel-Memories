@@ -10,12 +10,11 @@
 body {
     background: #0a0a0a;
     color: white;
-    overflow-x: hidden;
-    display: flex;
+    overflow-x: hidden; 
     flex-direction: column;
     min-height: 100vh;
     /* Efeito de grade neon */
-    background-image: radial-gradient(rgba(0, 255, 255, 0.15) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(0, 255, 255, 0.76) 1px, transparent 1px);
     background-size: 30px 30px;
 }
 
@@ -91,20 +90,83 @@ body {
 }
 
 /* AJUSTE NA GALERIA */
-.galeria {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 120px 8% 50px 8%;
-    max-width: 1400px;
-    margin: 0 auto;
-    flex: 1; 
+
+/* Container Externo */
+.galeria-admin {
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+
+
+/* Título */
+.admin-box h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* A Grade de Fotos (CORRIGIDA) */
+.grid-fotos {
+    display: flex;
+    flex-wrap: wrap;         /* Permite quebrar linha */
+    justify-content: flex-start; /* IMPORTANTE: Mantém o alinhamento à esquerda para evitar o corte da 1ª foto */
+    gap: 25px;               /* Espaço entre os cards */
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media (max-width: 800px) {
+    .grid-fotos {
+        justify-content: center;
+        gap: 15px; /* Diminui um pouco o espaço para ganhar tela */
+        padding: 10px;
+    }
+
+    .card-foto {
+        flex: 1 1 300px; 
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .card-foto img {
+        height: 250px; 
+    }
+}
+
+
+
+.card-foto {
+    flex: 0 1 calc(25% - 20px); 
+    min-width: 250px;           
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #333;
+    transition: transform 0.3s ease;
+}
+
+
+/* Título da seção */
+.admin-box h2 {
+    text-align: center;
+    width: 100%;
+    justify-content: center; 
+    margin-bottom: 20px;
 }
 
 
 
     
-    /* SCROLLBAR */
+   
     
     ::-webkit-scrollbar{
     width:10px;
@@ -299,7 +361,8 @@ body {
     }
     
     .titulo-section h2{
-    font-size:40px;
+     color:cyan;
+     font-size:40px;
     margin-bottom:10px;
     }
     
@@ -520,6 +583,15 @@ footer p {
    TOPO GALERIA - ESTILIZAÇÃO
    ============================================================ */
 
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 120px 8% 100px 8%; 
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 .topo-galeria {
     width: 100%;
     padding: 160px 8% 40px 8%; /* Padding superior maior para compensar o Header fixo */
@@ -531,7 +603,7 @@ footer p {
 .topo-galeria h2 {
     font-size: 50px;
     font-weight: 700;
-    color: #fff;
+    color: #00e8f8;
     margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -548,9 +620,9 @@ footer p {
     transform: translateX(-50%);
     width: 60px;
     height: 4px;
-    background: cyan;
+    background: rgb(0, 183, 255);
     border-radius: 2px;
-    box-shadow: 0 0 15px cyan;
+    box-shadow: 0 0 6px cyan;
 }
 
 .topo-galeria p {
@@ -579,26 +651,45 @@ footer p {
 /* ============================================================
    GALERIA - VERSÃO FINAL ORGANIZADA
    ============================================================ */
+  
 
-.galeria {
-    display: grid;
-    /* Cria colunas automáticas de no mínimo 300px. Se a tela diminuir, ele ajusta as colunas. */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 120px 8% 100px 8%; /* Espaço para não ficar atrás do header fixo */
-    max-width: 1400px;
-    margin: 0 auto;
+   .filtro-categorias {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
 }
+
+.filtro {
+    padding: 8px 15px;
+    border: none;
+    background: #222;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filtro:hover {
+    background: #555353;
+}
+
+.filtro.ativo {
+    background: #00aaff;
+    color: white;
+} 
+
 
 /* CONTAINER DE CADA FOTO */
 .foto {
     position: relative;
     overflow: hidden;
     border-radius: 20px;
-    background: #141414;
-    aspect-ratio: 4 / 4; 
+    background: #00ccff;
+    aspect-ratio: 4 / 5; 
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 4px solid rgba(19, 3, 3, 0.308);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
 }
 
@@ -629,14 +720,14 @@ footer p {
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; 
+    /* display: flex;
+    flex-direction: column; */
+    /* justify-content: flex-end;  */
     padding: 25px;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%);
+    background: linear-gradient(to top, rgba(48, 9, 219, 0.9) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none; 
+    /* pointer-events: none;  */
 }
 
 .foto:hover .overlay {
@@ -662,26 +753,6 @@ footer p {
     transition: transform 0.4s ease 0.1s;
 }
 
-.foto:hover .overlay h3, 
-.foto:hover .overlay p {
-    transform: translateY(0);
-}
-
-/* BOTÃO DE EXPANDIR DENTRO DO OVERLAY */
-.overlay button {
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    background: cyan;
-    color: #000;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 15px cyan;
-}
 
 /* RESPONSIVIDADE */
 @media(max-width: 900px) {
@@ -748,7 +819,7 @@ footer p {
     
     font-size:35px;
     
-    color:white;
+    color:rgb(255, 255, 255);
     
     cursor:pointer;
     
@@ -756,7 +827,7 @@ footer p {
     }
     
     .close:hover{
-    color:cyan;
+    color:rgb(0, 217, 255);
     transform:rotate(90deg);
     }
     
@@ -827,7 +898,7 @@ footer p {
     width:100%;
     height:100vh;
     
-    background:rgba(0,0,0,0.98);
+    background:rgba(0, 0, 0, 0.445);
     
     display:none;
     
@@ -843,68 +914,34 @@ footer p {
     
     /* IMAGEM */
     
-    .lightbox-img{
-    
-    width:auto;
-    height:auto;
-    
-    max-width:100%;
-    max-height:100vh;
-    
-    object-fit:contain;
-    
-    border-radius:15px;
-    
-    animation:zoom 0.4s ease;
-    }
-    
-    /* FECHAR */
-    
-    .close{
-    
+   .lightbox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,0.95);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.lightbox-img{
+    max-width:90%;
+    max-height:90vh;
+    border-radius:20px;
+}
+
+.close{
     position:absolute;
-    
-    top:20px;
-    right:30px;
-    
-    font-size:40px;
-    
+    top:30px;
+    right:40px;
+    font-size:35px;
     color:white;
-    
     cursor:pointer;
-    
-    z-index:100000;
-    
-    transition:0.3s;
-    }
-    
-    .close:hover{
-    
-    color:cyan;
-    
-    transform:rotate(90deg);
-    
-    }
-    
-    /* ANIMAÇÃO */
-    
-    @keyframes zoom{
-    
-    from{
-    
-    transform:scale(0.5);
-    opacity:0;
-    
-    }
-    
-    to{
-    
-    transform:scale(1);
-    opacity:1;
-    
-    }
-    
-    }
+}
 
     .admin-container{
 display:flex;
@@ -1058,3 +1095,8 @@ font-size:18px;
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+
+
+
+
+

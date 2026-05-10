@@ -10,48 +10,70 @@ if (
     exit();
 }
 
-/* CONEXÃO COM BANCO */
+/* CONEXÃO */
 include "php/conexao.php";
 
-/* CONTADOR DE FOTOS */
+/* CONTADOR */
 $sqlCount = "SELECT COUNT(*) AS total FROM fotos";
 $resultCount = $conn->query($sqlCount);
+$totalFotos = ($resultCount) ? $resultCount->fetch_assoc()['total'] : 0;
 
-$totalFotos = 0;
+/* FOTOS COM CATEGORIA */
+$sql = "
+SELECT 
+    fotos.*,
+    categorias.nome AS categoria_nome
+FROM fotos
+INNER JOIN categorias
+ON fotos.categoria_id = categorias.id
+ORDER BY fotos.id DESC
+";
 
-if ($resultCount) {
-    $row = $resultCount->fetch_assoc();
-    $totalFotos = $row['total'];
-}
+$resultado = $conn->query($sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin - Pixel Memories</title>
 
-    <title>Painel Admin - Pixel Memories</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
 
-<!-- ALERTA (SÓ UM) -->
+<!-- LOADING -->
+<div id="loading">
+
+    <div class="loader-box">
+
+        <div class="spinner"></div>
+
+        <h2>Enviando foto...</h2>
+
+        <p>Aguarde um momento</p>
+
+    </div>
+
+</div>  
+
+
+
+
+
+<!-- ALERTA -->
 <div id="alerta" class="alerta">
-
     <i class="fa-solid fa-circle-exclamation"></i>
-
     <span id="alerta-mensagem"></span>
-
 </div>
 
 <header class="header">
@@ -62,45 +84,49 @@ if ($resultCount) {
     </div>
 
     <nav class="menu">
-
-        <a href="index.html">Início</a>
+        <a href="index.php">Início</a>
         <a href="galeria.php">Galeria</a>
         <a href="admin.php" class="ativo">Admin</a>
-
-        <a href="../index.html" style="color:#ff6b6b;">
+        <a href="categories.php">Categorias</a>
+        <a href="php/logout.php" style="color:#ff6b6b;">
             <i class="fa-solid fa-right-from-bracket"></i>
             Sair
         </a>
-
     </nav>
 
 </header>
 
+<!-- UPLOAD -->
 <section class="admin-container">
 
     <div class="admin-box">
 
-        <h2>
-            <i class="fa-solid fa-upload"></i>
-            Enviar Nova Foto
-        </h2>
+        <h2><i class="fa-solid fa-upload"></i> Enviar Nova Foto</h2>
 
-        <p>Adicione imagens para sua galeria pessoal.</p>
-
-        <form action="php/upload.php" method="POST" enctype="multipart/form-data">
+        <form id="form-upload" action="php/upload.php" method="POST" enctype="multipart/form-data">
 
             <label>Selecionar Imagem</label>
             <input type="file" name="foto" required>
 
-            <label>Título da Foto</label>
+            <label>Título</label>
             <input type="text" name="titulo" required>
 
             <label>Categoria</label>
-            <select name="categoria">
-                <option value="Natureza">Natureza</option>
-                <option value="Cidade">Cidade</option>
-                <option value="Noite">Noite</option>
-                <option value="Animais">Animais</option>
+
+            <select name="categoria" required>
+                <option value="">Selecione</option>
+
+                <?php
+                $sqlCategorias = "SELECT * FROM categorias ORDER BY nome ASC";
+                $resultCategorias = $conn->query($sqlCategorias);
+
+                while($cat = $resultCategorias->fetch_assoc()) {
+                ?>
+                    <option value="<?php echo $cat['id']; ?>">
+                        <?php echo $cat['nome']; ?>
+                    </option>
+                <?php } ?>
+
             </select>
 
             <button type="submit">
@@ -111,84 +137,72 @@ if ($resultCount) {
         </form>
 
         <div class="card-contador">
+            <i class="fa-solid fa-images"></i>
+            <div>
+                <h3><?php echo $totalFotos; ?></h3>
+                <p>Total de Fotos</p>
+            </div>
+        </div>
 
-    <i class="fa-solid fa-images"></i>
-
-    <div>
-        <h3><?php echo $totalFotos; ?></h3>
-        <p>Total de Fotos</p>
-    </div>
-
-</div>
     </div>
 
 </section>
 
+<!-- GALERIA -->
 <section class="galeria-admin">
 
-    <div class="admin-box">
+<div class="admin-box">
 
-        <h2>
-            <i class="fa-solid fa-images"></i>
-            Fotos Enviadas
-        </h2>
+    <h2><i class="fa-solid fa-images"></i> Fotos Enviadas</h2>
 
-        <div class="grid-fotos">
+    <div class="grid-fotos">
 
-<?php
+        <?php while($foto = $resultado->fetch_assoc()) { ?>
 
-include "php/conexao.php";
+        <div class="card-foto">
 
-$sql = "SELECT * FROM fotos ORDER BY id DESC";
-$resultado = $conn->query($sql);
+            <img src="<?php echo $foto['caminho_arquivo']; ?>">
 
-while($foto = $resultado->fetch_assoc()) {
+            <div class="card-info">
 
-?>
+                <h3><?php echo $foto['titulo']; ?></h3>
 
-            <div class="card-foto">
+                <p><?php echo $foto['categoria_nome']; ?></p>
 
-                <img src="<?php echo $foto['caminho_arquivo']; ?>" alt="<?php echo $foto['categoria']; ?>">
+                <div class="acoes">
 
-                <div class="card-info">
+                    <a href="#"
+                       class="btn-editar"
+                       onclick="abrirModal(
+                            '<?php echo $foto['id']; ?>',
+                            '<?php echo addslashes($foto['titulo']); ?>',
+                            '<?php echo $foto['categoria_id']; ?>'
+                       )">
+                        Editar
+                    </a>
 
-                    <h3><?php echo $foto['titulo']; ?></h3>
-                    <p><?php echo $foto['categoria']; ?></p>
-
-                    <div class="acoes">
-
-                        <a href="#" class="btn-editar"
-   onclick="abrirModal(
-        '<?php echo $foto['id']; ?>',
-        '<?php echo addslashes($foto['titulo']); ?>',
-        '<?php echo $foto['categoria']; ?>'
-   )">
-
-    <i class="fa-solid fa-pen"></i> Editar
-
-</a>
-
-                        <a href="php/excluir.php?id=<?php echo $foto['id']; ?>"
+                 <a href="php/excluir.php?id=<?php echo $foto['id']; ?>"
                            class="btn-excluir anim-delete">
 
                             <i class="fa-solid fa-trash"></i> Excluir
 
                         </a>
 
-                    </div>
-
                 </div>
 
             </div>
 
-<?php } ?>
-
         </div>
+
+        <?php } ?>
 
     </div>
 
+</div>
 
-<!-- MODAL EDITAR -->
+</section>
+
+<!-- MODAL -->
 <div id="modalEditar" class="modal">
 
     <div class="modal-content">
@@ -205,12 +219,19 @@ while($foto = $resultado->fetch_assoc()) {
             <input type="text" name="titulo" id="edit-titulo" required>
 
             <label>Categoria</label>
+
             <select name="categoria" id="edit-categoria">
 
-                <option value="Natureza">Natureza</option>
-                <option value="Cidade">Cidade</option>
-                <option value="Noite">Noite</option>
-                <option value="Animais">Animais</option>
+                <?php
+                $sqlCategorias = "SELECT * FROM categorias ORDER BY nome ASC";
+                $resultCategorias = $conn->query($sqlCategorias);
+
+                while($cat = $resultCategorias->fetch_assoc()) {
+                ?>
+                    <option value="<?php echo $cat['id']; ?>">
+                        <?php echo $cat['nome']; ?>
+                    </option>
+                <?php } ?>
 
             </select>
 
@@ -220,110 +241,110 @@ while($foto = $resultado->fetch_assoc()) {
 
     </div>
 
-</section>
+</div>
+
+<!-- JS -->
 
 <script>
 
-/* ALERTA */
+
+
+/* =========================
+   SISTEMA DE ALERTAS
+========================= */
 const urlParams = new URLSearchParams(window.location.search);
-
-const status = urlParams.get('status');
 const erro = urlParams.get('erro');
-
+const status = urlParams.get('status');
 const alerta = document.getElementById('alerta');
 const mensagem = document.getElementById('alerta-mensagem');
 
-function mostrarAlerta(tipo, texto, icone){
+if (erro || status) {
+    alerta.style.display = 'flex';
+    
+    // Mapeamento de mensagens
+    const mensagens = {
+        'muitopequeno': 'A imagem é muito pequena. Escolha um arquivo maior que 10KB.',
+        'tamanho': 'Arquivo muito grande! Máximo de 20MB permitido.',
+        'formato': 'Formato inválido! Use JPG, PNG ou WebP.',
+        'sucesso': 'Foto enviada com sucesso!',
+        'bd': 'Erro ao salvar no banco de dados.',
+        'vazio': 'Selecione uma imagem antes de enviar.'
+    };
 
-    alerta.classList.remove('erro', 'sucesso');
-    alerta.classList.add('show', tipo);
+    if (status === 'sucesso') {
+        alerta.style.backgroundColor = '#27ae60'; // Verde para sucesso
+        mensagem.innerText = mensagens['sucesso'];
+    } else {
+        alerta.style.backgroundColor = '#e74c3c'; // Vermelho para erro
+        mensagem.innerText = mensagens[erro] || 'Ocorreu um erro inesperado.';
+    }
 
-    alerta.querySelector('i').className = icone;
-    mensagem.innerText = texto;
+    // Sumir após 5 segundos
+    setTimeout(() => {
+        alerta.style.opacity = '0';
+        setTimeout(() => alerta.style.display = 'none', 500);
+    }, 5000);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    window.abrirModal = function(id, titulo, categoria_id){
+
+        document.getElementById('modalEditar').style.display = 'flex';
+
+        document.getElementById('edit-id').value = id;
+        document.getElementById('edit-titulo').value = titulo;
+        document.getElementById('edit-categoria').value = categoria_id;
+
+    }
+
+    window.fecharModal = function(){
+
+        document.getElementById('modalEditar').style.display = 'none';
+
+    }
+
+    window.onclick = function(event){
+
+        let modal = document.getElementById('modalEditar');
+
+        if(event.target === modal){
+            modal.style.display = 'none';
+        }
+
+    }
+
+    /* =========================
+       LOADING UPLOAD
+    ========================= */
+
+    const formUpload = document.getElementById('form-upload');
+    const loading = document.getElementById('loading');
+
+    if(formUpload){
+
+        formUpload.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    loading.style.display = 'flex';
 
     setTimeout(() => {
-        alerta.classList.remove('show');
-    }, 3000);
-}
 
-/* ERROS */
-if (erro) {
+        formUpload.submit();
 
-    if (erro === 'formato')
-        mostrarAlerta('erro','Formato inválido!','fa-solid fa-circle-xmark');
-
-    else if (erro === 'tamanho')
-        mostrarAlerta('erro','Arquivo muito grande!','fa-solid fa-circle-xmark');
-
-    else if (erro === 'upload')
-        mostrarAlerta('erro','Erro ao enviar imagem!','fa-solid fa-circle-xmark');
-
-    else if (erro === 'bd')
-        mostrarAlerta('erro','Erro no banco!','fa-solid fa-circle-xmark');
-
-    else if (erro === 'vazio')
-        mostrarAlerta('erro','Nenhuma imagem!','fa-solid fa-circle-xmark');
-
-}
-
-/* SUCESSO */
-if (status === 'sucesso') {
-    mostrarAlerta('sucesso','Foto enviada com sucesso!','fa-solid fa-circle-check');
-}
-
-/* DELETE ANIMADO */
-document.querySelectorAll('.anim-delete').forEach(btn => {
-
-    btn.addEventListener('click', function(e) {
-
-        const ok = confirm('Deseja excluir esta foto?');
-
-        if (!ok) {
-            e.preventDefault();
-            return;
-        }
-
-        const card = this.closest('.card-foto');
-
-        if (card) {
-
-            card.style.transition = "0.4s";
-            card.style.transform = "scale(0.8)";
-            card.style.opacity = "0";
-
-            setTimeout(() => {
-                window.location.href = this.href;
-            }, 300);
-
-            e.preventDefault();
-
-        }
-
-    });
+    }, 3000); // 2 segundos mínimos
 
 });
 
-
-function abrirModal(id, titulo, categoria){
-
-    document.getElementById('modalEditar').style.display = 'flex';
-
-    document.getElementById('edit-id').value = id;
-    document.getElementById('edit-titulo').value = titulo;
-    document.getElementById('edit-categoria').value = categoria;
-
-}
-
-function fecharModal(){
-    document.getElementById('modalEditar').style.display = 'none';
-}
-
-window.onclick = function(event){
-    let modal = document.getElementById('modalEditar');
-    if(event.target === modal){
-        modal.style.display = 'none';
     }
-}
+
+});
 
 
 

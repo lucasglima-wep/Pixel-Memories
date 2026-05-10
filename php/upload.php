@@ -1,79 +1,115 @@
 <?php
+// 1. Configurações de Erro e Sessão
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 session_start();
 
-include "conexao.php";
+// 2. Conexão e Segurança de Acesso
+include "conexao.php"; 
 
-// Verifica se o utilizador está logado
-if(!isset($_SESSION['logado'])){
+if (!isset($_SESSION['logado'])) {
     header("Location: ../login.html");
-    exit;
+    exit();
 }
 
-if(isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-    
-    $titulo = $conn->real_escape_string($_POST['titulo']);
-    $categoria = $conn->real_escape_string($_POST['categoria']);
-    
-    $nome_ficheiro = $_FILES['foto']['name'];
-    $tamanho_ficheiro = $_FILES['foto']['size'];
-    $tmp_name = $_FILES['foto']['tmp_name'];
-    
-    $extensao = strtolower(pathinfo($nome_ficheiro, PATHINFO_EXTENSION));
-    $permitidos = array('jpg', 'jpeg', 'png', 'webp');
-    
-    if(!in_array($extensao, $permitidos)) {
-        header("Location: ../admin.php?erro=formato");
+// 3. Verifica se o formulário foi enviado corretamente
+if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+
+    $titulo    = trim($_POST['titulo']);
+    $categoria = intval($_POST['categoria']);
+    $tamanho   = $_FILES['foto']['size'];
+    $tmp_name  = $_FILES['foto']['tmp_name'];
+    $nome_orig = $_FILES['foto']['name'];
+
+    // --- VALIDAÇÕES DE TAMANHO ---
+    $tamanho_minimo = 10 * 1024; // 10 KB
+    $tamanho_maximo = 20 * 1024 * 1024; // 20 MB
+
+    if ($tamanho < $tamanho_minimo) {
+        header("Location: ../admin.php?erro=muitopequeno");
         exit();
     }
-    
-    if($tamanho_ficheiro > 20 * 1024 * 1024) {
+
+    if ($tamanho > $tamanho_maximo) {
         header("Location: ../admin.php?erro=tamanho");
         exit();
     }
 
-    $novo_nome = uniqid("img_") . ".jpg"; // Forçamos .jpg para a compressão
-    $pasta_destino = "../fotos/";
-    $caminho_final = $pasta_destino . $novo_nome;
+    // --- VALIDAÇÃO DE EXTENSÃO ---
+    $ext = strtolower(pathinfo($nome_orig, PATHINFO_EXTENSION));
+    $permitidos = ['jpg', 'jpeg', 'png', 'webp'];
 
-    // --- SISTEMA DE COMPRESSÃO ---
-    
-    // 1. Criar a imagem base dependendo do formato original
-    if ($extensao == 'jpg' || $extensao == 'jpeg') {
-        $imagem_original = imagecreatefromjpeg($tmp_name);
-    } elseif ($extensao == 'png') {
-        $imagem_original = imagecreatefrompng($tmp_name);
-        // Manter transparência se necessário, ou converter para fundo branco/preto
-        imagepalettetotruecolor($imagem_original);
-    } elseif ($extensao == 'webp') {
-        $imagem_original = imagecreatefromwebp($tmp_name);
+    if (!in_array($ext, $permitidos)) {
+        header("Location: ../admin.php?erro=formato");
+        exit();
     }
 
-    // 2. Guardar a imagem com compressão (Qualidade 60)
-    // imagejpeg(recurso, destino, qualidade)
-    if(imagejpeg($imagem_original, $caminho_final, 60)) {
-        
-        imagedestroy($imagem_original); // Liberta a memória do servidor
-        
+    // --- PREPARAÇÃO DO ARQUIVO ---
+    $novo_nome = uniqid("img_") . ".jpg";
+    $pasta = "../fotos/";
+
+    if (!is_dir($pasta)) {
+        mkdir($pasta, 0777, true);
+    }
+
+    $caminho_final = $pasta . $novo_nome;
+
+    // --- PROCESSAMENTO DA IMAGEM ---
+    $imagem_original = null;
+    switch ($ext) {
+        case 'jpg':
+        case 'jpeg':
+            $imagem_original = @imagecreatefromjpeg($tmp_name);
+            break;
+        case 'png':
+            $imagem_original = @imagecreatefrompng($tmp_name);
+            if ($imagem_original) imagepalettetotruecolor($imagem_original);
+            break;
+        case 'webp':
+            $imagem_original = @imagecreatefromwebp($tmp_name);
+            break;
+    }
+
+    if (!$imagem_original) {
+        header("Location: ../admin.php?erro=imagem");
+        exit();
+    }
+
+    // Aplica entrelaçamento (progressivo) e salva como JPG comprimido
+    imageinterlace($imagem_original, true);
+    
+    if (imagejpeg($imagem_original, $caminho_final, 60)) {
+        imagedestroy($imagem_original);
+
         $caminho_bd = "fotos/" . $novo_nome;
-        $sql = "INSERT INTO fotos (titulo, categoria, caminho_arquivo) VALUES ('$titulo', '$categoria', '$caminho_bd')";
-        
-        if($conn->query($sql)) {
-            header("Location: ../admin.php?status=sucesso");
-            exit();
+
+        // --- BANCO DE DADOS (PREPARED STATEMENT) ---
+        $sql = "INSERT INTO fotos (titulo, categoria_id, caminho_arquivo) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("sis", $titulo, $categoria, $caminho_bd);
+            
+            if ($stmt->execute()) {
+                header("Location: ../admin.php?status=sucesso");
+            } else {
+                header("Location: ../admin.php?erro=bd");
+            }
+            $stmt->close();
         } else {
-            header("Location: ../admin.php?erro=bd");
-            exit();
+            header("Location: ../admin.php?erro=sql_prepare");
         }
-        
+        exit();
+
     } else {
         header("Location: ../admin.php?erro=compressao");
         exit();
     }
 
 } else {
+    // Se caiu aqui, ou o arquivo é muito grande para o servidor ou nada foi enviado
     header("Location: ../admin.php?erro=vazio");
     exit();
 }

@@ -3,25 +3,23 @@
 include "conexao.php";
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-
     die("Método inválido");
-
 }
 
 $id = intval($_POST['id']);
 
 $titulo = trim($_POST['titulo']);
-$categoria = trim($_POST['categoria']);
+$categoria = intval($_POST['categoria']); // <-- importante (INT)
 
 $sql = "UPDATE fotos
         SET titulo = ?,
-            categoria = ?
+            categoria_id = ?
         WHERE id = ?";
 
 $stmt = $conn->prepare($sql);
 
 $stmt->bind_param(
-    "ssi",
+    "sii",
     $titulo,
     $categoria,
     $id
@@ -29,13 +27,12 @@ $stmt->bind_param(
 
 if ($stmt->execute()) {
 
-    header("Location: ../admin.php");
+    header("Location: ../admin.php?status=sucesso");
     exit();
 
 } else {
 
-    echo "Erro ao atualizar.";
+    echo "Erro ao atualizar: " . $stmt->error;
 
 }
-
 ?>

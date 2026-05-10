@@ -4,19 +4,39 @@ COLLATE utf8mb4_unicode_ci;
 
 USE pixel_memories;
 
-/* 👤 TABELA DE ADMINS */
-CREATE TABLE IF NOT EXISTS admins (
+-- 👤 ADMINS
+CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(50) UNIQUE NOT NULL,
+    usuario VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-/* 📸 TABELA DE FOTOS */
-CREATE TABLE IF NOT EXISTS fotos (
+-- 📂 CATEGORIAS
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT NOT NULL,
+    imagem VARCHAR(255) NOT NULL
+);
+
+-- 📸 FOTOS
+CREATE TABLE fotos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
-    categoria VARCHAR(50) NOT NULL,
     caminho_arquivo VARCHAR(255) NOT NULL,
-    data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    categoria_id INT NULL,
+    data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_fotos_categorias
+    FOREIGN KEY (categoria_id)
+    REFERENCES categorias(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
 );
+
+-- 📌 DADOS INICIAIS
+INSERT INTO categorias (nome, descricao, imagem) VALUES
+('Natureza', 'Paisagens incríveis', 'fotos/natureza.jpg'),
+('Cidade', 'Arquitetura urbana', 'fotos/cidade.jpg'),
+('Noite', 'Luzes noturnas', 'fotos/noite.jpg');
