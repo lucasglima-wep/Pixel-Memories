@@ -109,3 +109,70 @@ outline:none;
 border:1px solid cyan;
 box-shadow:0 0 10px cyan;
 }
+
+/* RESPONSIVIDADE PARA CELULAR */
+
+
+/* 1. TABLETS (Até 768px) */
+@media (max-width: 768px) {
+    .login-box {
+        width: 400px; /* Um pouco mais largo que no telemóvel */
+        padding: 35px;
+    }
+    
+    .login-icon i {
+        font-size: 45px;
+    }
+}
+
+/* 2. TELEMÓVEIS GRANDES (Até 480px) */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 15px;
+    }
+
+    .login-box {
+        width: 100%; /* Ocupa a largura total disponível */
+        max-width: 350px; /* Mas não passa do tamanho ideal */
+        padding: 30px 20px;
+        border-radius: 15px;
+    }
+
+    .login-box h2 {
+        font-size: 20px;
+    }
+
+    .input-box {
+        padding: 10px; /* Inputs ligeiramente menores para poupar espaço */
+    }
+
+    .login-box button {
+        padding: 14px; /* Botão maior para facilitar o toque com o polegar */
+    }
+}
+
+/* 3. TELEMÓVEIS PEQUENOS (Até 320px - Ex: iPhone SE antigo) */
+@media (max-width: 320px) {
+    .login-box {
+        padding: 20px 15px;
+    }
+    
+    .login-box h2 {
+        font-size: 18px;
+    }
+    
+    .footer-text {
+        font-size: 10px;
+    }
+}
+
+/* 4. ECRÃS GRANDES / DESKTOP (Acima de 1200px) */
+@media (min-width: 1200px) {
+    .login-box {
+        box-shadow: 0 0 50px rgba(0, 255, 255, 0.15); /* Brilho mais intenso em ecrãs grandes */
+    }
+    
+    .login-box button:hover {
+        transform: scale(1.05); /* Efeito de zoom leve ao passar o rato */
+    }
+}

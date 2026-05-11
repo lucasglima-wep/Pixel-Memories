@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Login Admin - Pixel Memories</title>
-
+<link rel="icon" href="fotos/logo.png">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/login.css">
 
@@ -22,6 +22,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 </head>
 
 <body>
+
+        <header class="header">
+        <div class="logo">
+            <img src="fotos/logo.png" alt="Pixel Memories" class="logo-img">
+            <h1>Pixel Memories</h1>
+        </div>
+        <nav class="menu">
+            <a href="index.php">Início</a>
+            <a href="galeria.php" class="ativo">Galeria</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="contato.html">Contato</a>
+        </nav>
+    </header>
+
 
 <!-- FUNDO -->
 
@@ -97,41 +111,47 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 </div>
    
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get('status'); 
-    const erro = urlParams.get('erro');     
+const urlParams = new URLSearchParams(window.location.search);
+const status = urlParams.get('status'); 
+const erro = urlParams.get('erro');     
+
+const alerta = document.getElementById('alerta');
+const mensagem = document.getElementById('alerta-mensagem');
+
+if (erro || status) {
+    // 1. Mostra o alerta removendo a classe de 'escondido' e colocando a de 'exibido'
+    alerta.classList.remove('alerta-escondido');
+    alerta.classList.add('alerta-exibido');
+
+    // 2. Lógica para Acesso Negado 
+    if (erro === 'acesso_negado') {
+        alerta.classList.add('alerta-negado');
+        mensagem.innerText = "Acesso negado! Por favor, faça login para continuar.";
+    } 
     
-    const alerta = document.getElementById('alerta');
-    const mensagem = document.getElementById('alerta-mensagem');
-
-    // Se for um erro
-    if (erro) {
-        alerta.classList.remove('alerta-escondido');
-        alerta.classList.add('alerta-exibido', 'erro');
-
-        if (erro === 'senha') {
-            mensagem.innerText = "Usuário ou senha incorretos.";
-        } else if (erro === 'usuario') {
-            mensagem.innerText = "Usuário ou senha incorretos.";
-        } else if (erro === 'campos') {
-            mensagem.innerText = "Por favor, preencha todos os campos.";
-        }
+    // 3. Lógica para Erros de Login
+    else if (erro === 'senha' || erro === 'usuario') {
+        alerta.classList.add('erro');
+        mensagem.innerText = "Usuário ou senha incorretos.";
     }
 
-    // Se for um sucesso (ex: logout ou contato enviado)
-    if (status === 'sucesso') {
-        alerta.classList.remove('alerta-escondido');
-        alerta.classList.add('alerta-exibido', 'sucesso');
-        alerta.querySelector('i').className = "fa-solid fa-circle-check"; // Muda o ícone
-        mensagem.innerText = "Ação realizada com sucesso!";
+    // 4. Lógica para Sucesso (Logout)
+    else if (status === 'sucesso') {
+        alerta.classList.add('sucesso');
+        alerta.querySelector('i').className = "fa-solid fa-circle-check";
+        mensagem.innerText = "Você saiu do sistema com segurança!";
     }
 
-    // Limpar a URL após 3 segundos para o aviso não "travar" na tela
-    if (erro || status) {
+    // 5. Limpar a URL e esconder após 4 segundos
+    setTimeout(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        alerta.style.opacity = '0';
         setTimeout(() => {
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }, 3000);
-    }
+            alerta.classList.replace('alerta-exibido', 'alerta-escondido');
+            alerta.style.opacity = '1';
+        }, 500);
+    }, 4000);
+}
 </script>
 
 

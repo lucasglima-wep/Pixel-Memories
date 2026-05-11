@@ -506,3 +506,71 @@ button:hover{
         transform:rotate(360deg);
     }
 }
+
+
+/* =============================================
+   AJUSTES DE RESPONSIVIDADE COMPLETA
+   ============================================= */
+
+/* 1. TABLETS (Ecrãs até 1024px) */
+@media (max-width: 1024px) {
+    .admin-box {
+        width: 80%; /* Aumenta a largura em relação ao desktop */
+    }
+}
+
+/* 2. SMARTPHONES (Ecrãs até 768px) */
+@media (max-width: 768px) {
+    .admin-box {
+        width: 95%; /* Quase ecrã total para não perder espaço */
+        padding: 20px 0; /* Remove padding lateral para as fotos encostarem nas bordas se necessário */
+    }
+
+    .admin-box h2, .admin-box p {
+        padding: 0 20px; /* Mantém o texto alinhado mas longe da borda */
+    }
+
+    .grid-fotos {
+        padding: 10px 20px 20px 20px; /* Reduz o recuo lateral das fotos */
+        gap: 15px;
+    }
+
+    .card-foto {
+        flex: 0 0 250px; /* Cards ligeiramente menores no mobile */
+        min-width: 250px;
+    }
+
+    .card-contador {
+        flex-direction: column; /* Ícone em cima do texto no mobile */
+        text-align: center;
+        margin: 20px 15px;
+    }
+}
+
+/* 3. TELEMÓVEIS PEQUENOS (Até 480px) */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .card-foto {
+        flex: 0 0 85vw; /* O card ocupa 85% da largura da vista do telemóvel */
+        min-width: 85vw;
+    }
+
+    .acoes {
+        flex-direction: column; /* Botões Editar/Excluir um por cima do outro */
+        gap: 8px;
+    }
+
+    /* Alerta fixo no topo no mobile para ser mais visível */
+    .alerta {
+        width: 90%;
+        top: 20px;
+        transform: translate(-50%, 0) scale(0.9);
+    }
+    
+    .alerta.show {
+        transform: translate(-50%, 0) scale(1);
+    }
+}

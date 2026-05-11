@@ -1,14 +1,13 @@
+
 <?php
 session_start();
 
-if (
-    !isset($_SESSION['logado']) ||
-    $_SESSION['logado'] !== true ||
-    !isset($_SESSION['id'])
-) {
-    header("Location: login.html?erro=acesso_negado");
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    // Note o final da linha: ?erro=acesso_negado
+    header("Location: login.html?erro=acesso_negado"); 
     exit();
 }
+
 
 /* CONEXÃO */
 include "php/conexao.php";
@@ -40,7 +39,7 @@ $resultado = $conn->query($sql);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Painel Admin - Pixel Memories</title>
-
+<link rel="icon" href="fotos/logo.png">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/admin.css">
 
@@ -48,6 +47,60 @@ $resultado = $conn->query($sql);
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
+ 
+<style>
+    /* ALERTA PREMIUM CENTRALIZADO */
+#alerta {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    
+    background: rgba(26, 26, 26, 0.98); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    padding: 40px;
+    border-radius: 25px;
+    color: white;
+    
+    display: none; /* JS muda para flex */
+    opacity: 0;
+    pointer-events: none; 
+    
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    
+    z-index: 10005;
+    min-width: 320px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Classe ativa para animar */
+#alerta.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+#alerta i {
+    font-size: 50px;
+}
+
+#alerta-mensagem {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Cores de feedback */
+.alerta-sucesso { border-bottom: 5px solid #27ae60 !important; }
+.alerta-erro { border-bottom: 5px solid #e74c3c !important; }
+</style>
 
 <body>
 
@@ -250,42 +303,52 @@ $resultado = $conn->query($sql);
 
 
 /* =========================
-   SISTEMA DE ALERTAS
+   SISTEMA DE ALERTAS PREMIUM
 ========================= */
 const urlParams = new URLSearchParams(window.location.search);
 const erro = urlParams.get('erro');
 const status = urlParams.get('status');
 const alerta = document.getElementById('alerta');
 const mensagem = document.getElementById('alerta-mensagem');
+const iconeAlerta = alerta.querySelector('i');
 
 if (erro || status) {
     alerta.style.display = 'flex';
     
-    // Mapeamento de mensagens
     const mensagens = {
-        'muitopequeno': 'A imagem é muito pequena. Escolha um arquivo maior que 10KB.',
-        'tamanho': 'Arquivo muito grande! Máximo de 20MB permitido.',
+        'muitopequeno': 'A imagem é muito pequena (mín. 10KB).',
+        'tamanho': 'Arquivo muito grande (máx. 20MB).',
         'formato': 'Formato inválido! Use JPG, PNG ou WebP.',
         'sucesso': 'Foto enviada com sucesso!',
+        'editado': 'Alterações salvas!',
         'bd': 'Erro ao salvar no banco de dados.',
-        'vazio': 'Selecione uma imagem antes de enviar.'
+        'vazio': 'Selecione uma imagem primeiro.'
     };
 
-    if (status === 'sucesso') {
-        alerta.style.backgroundColor = '#27ae60'; // Verde para sucesso
-        mensagem.innerText = mensagens['sucesso'];
+    // Define cor e ícone
+    if (status === 'sucesso' || status === 'editado') {
+        alerta.classList.add('alerta-sucesso');
+        iconeAlerta.className = 'fa-solid fa-circle-check';
+        iconeAlerta.style.color = '#27ae60';
+        mensagem.innerText = mensagens[status];
     } else {
-        alerta.style.backgroundColor = '#e74c3c'; // Vermelho para erro
+        alerta.classList.add('alerta-erro');
+        iconeAlerta.className = 'fa-solid fa-circle-xmark';
+        iconeAlerta.style.color = '#e74c3c';
         mensagem.innerText = mensagens[erro] || 'Ocorreu um erro inesperado.';
     }
 
-    // Sumir após 5 segundos
+    // Dispara a animação
     setTimeout(() => {
-        alerta.style.opacity = '0';
-        setTimeout(() => alerta.style.display = 'none', 500);
-    }, 5000);
-}
+        alerta.classList.add('active');
+    }, 100);
 
+    // Sumir após 4 segundos
+    setTimeout(() => {
+        alerta.classList.remove('active');
+        setTimeout(() => alerta.style.display = 'none', 500);
+    }, 4000);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 

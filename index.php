@@ -58,13 +58,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
         <h2>Minha Galeria Pessoal</h2>
 
-        <p>
+        <!-- <p>
 Bem-vindo ao meu espaço de memórias visuais, onde cada foto conta uma história única. 
 Explore minha coleção de momentos capturados,
 desde paisagens deslumbrantes até retratos íntimos.
  Cada imagem é uma janela para minhas experiências e emoções, 
 convidando você a mergulhar em um mundo de beleza e significado.
-        </p>
+        </p> -->
 
         <div class="hero-buttons">
 
@@ -119,8 +119,8 @@ if ($result && $result->num_rows > 0) {
                 <?php echo $cat['descricao']; ?>
             </p>
 
-            <a href="galeria.php?categoria=<?php echo $cat['id']; ?>">
-                <button>Explorar</button>
+            <a class="btn" href="galeria.php?categoria=<?php echo $cat['id']; ?>">
+              Explorar
             </a>
 
         </div>
