@@ -19,7 +19,7 @@ if (!isset($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-/* 1. BUSCAR O NOME DA IMAGEM ANTES DE DELETAR O REGISTRO */
+
 $sqlBusca = "SELECT imagem FROM categorias WHERE id = ?";
 $stmtBusca = $conn->prepare($sqlBusca);
 $stmtBusca->bind_param("i", $id);

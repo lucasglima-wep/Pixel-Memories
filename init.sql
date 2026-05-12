@@ -13,7 +13,7 @@ CREATE TABLE admins (
 );
 
 -- 📂 CATEGORIAS
-CREATE TABLE categorias (
+CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT NOT NULL,

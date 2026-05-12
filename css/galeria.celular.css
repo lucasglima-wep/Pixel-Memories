@@ -1,0 +1,60 @@
+/* ============================================================
+   AJUSTES PARA TELEMÓVEL (MOBILE) - 2 COLUNAS
+   ============================================================ */
+
+@media (max-width: 600px) {
+    /* 1. Ajuste da Grade: Duas fotos por linha (1fr 1fr) */
+    .galeria {
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; /* Reduzi um pouco o espaço para caberem melhor lado a lado */
+        padding: 80px 10px 30px 10px; /* Reduzi o padding superior e lateral */
+    }
+
+    /* 2. Ajuste do Tamanho da Foto */
+    .foto {
+        aspect-ratio: 1 / 1; 
+        border-radius: 12px; /* Arredondamento levemente menor para telas pequenas */
+    }
+
+    /* 3. Ajuste do Overlay (Conteúdo sobre a foto) */
+    .overlay {
+        padding: 10px;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+        opacity: 1; 
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .overlay h3 {
+        font-size: 14px; /* Diminuído para não quebrar linha em nomes grandes */
+        margin-bottom: 2px;
+        transform: translateY(0); 
+    }
+
+    .overlay p {
+        font-size: 11px; /* Texto menor para caber na coluna estreita */
+        margin-bottom: 5px;
+        transform: translateY(0);
+        line-height: 1.2;
+    }
+
+    /* Ajuste dos botões dentro da foto (ex: excluir/ver) */
+    .overlay button {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    /* Ajustes do Lightbox (Imagem expandida) */
+    .lightbox-img {
+        max-width: 95%;
+        max-height: 70vh;
+    }
+    
+    .close {
+        top: 15px;
+        right: 20px;
+        font-size: 30px;
+    }
+}

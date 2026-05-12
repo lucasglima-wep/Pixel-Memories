@@ -1,5 +1,4 @@
 <?php
-// 1. Inicia a sessão
 session_start();
 
 // 2. Limpa os dados da sessão

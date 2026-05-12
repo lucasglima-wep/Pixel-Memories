@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Servidor PHP (Seu site Pixel Memories)
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  # Banco de Dados MySQL
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: pixel_memories
+      MYSQL_ROOT_PASSWORD: senha_pixel
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # Interface para acessar o banco pelo navegador
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+# Declaração do volume persistente para o MySQL
+volumes:
+  db_data:
