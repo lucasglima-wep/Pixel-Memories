@@ -320,13 +320,14 @@ if (erro || status) {
         'tamanho': 'Arquivo muito grande (máx. 20MB).',
         'formato': 'Formato inválido! Use JPG, PNG ou WebP.',
         'sucesso': 'Foto enviada com sucesso!',
-        'editado': 'Alterações salvas!',
+        'excluido': 'Foto excluída com sucesso!',
         'bd': 'Erro ao salvar no banco de dados.',
-        'vazio': 'Selecione uma imagem primeiro.'
+        'vazio': 'Selecione uma imagem primeiro.',
+        'editado': 'Foto editada com sucesso!',
     };
 
     // Define cor e ícone
-    if (status === 'sucesso' || status === 'editado') {
+    if (status === 'sucesso' || status === 'editado' || status === 'excluido') {
         alerta.classList.add('alerta-sucesso');
         iconeAlerta.className = 'fa-solid fa-circle-check';
         iconeAlerta.style.color = '#27ae60';

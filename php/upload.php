@@ -107,10 +107,15 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         header("Location: ../admin.php?erro=compressao");
         exit();
     }
+    
+    } else {
+        header("Location: ../admin.php?status=edi");
+        exit();
+    }
 
-} else {
-    // Se caiu aqui, ou o arquivo é muito grande para o servidor ou nada foi enviado
-    header("Location: ../admin.php?erro=vazio");
-    exit();
-}
+//  else {
+//     // Se caiu aqui, ou o arquivo é muito grande para o servidor ou nada foi enviado
+//     header("Location: ../admin.php?erro=vazio");
+//     exit();
+// }
 ?>

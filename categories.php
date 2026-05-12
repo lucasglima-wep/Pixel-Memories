@@ -2,6 +2,13 @@
 session_start();
 
 if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    // Note o final da linha: ?erro=acesso_negado
+    header("Location: login.html?erro=acesso_negado"); 
+    exit();
+}
+
+
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     header("Location: login.html");
     exit();
 }
@@ -98,9 +105,14 @@ if (isset($_POST['btn_editar'])) {
     <nav class="menu">
         <a href="index.php">Início</a>
         <a href="galeria.php">Galeria</a>
-        <a href="admin.php">Admin</a>
-        <a href="categories.php" class="ativo">Categorias</a>
+        <a href="admin.php" >Admin</a>
+        <a href="categories.php" class="ativo" >Categorias</a>
+        <a href="php/logout.php" style="color:#ff6b6b;">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Sair
+        </a>
     </nav>
+
 </header>
 
 <section class="categoria-box">
@@ -199,6 +211,7 @@ if (status) {
     const msgMap = {
         'sucesso': 'Categoria criada com sucesso!',
         'editado': 'Categoria atualizada!',
+        'excluido': 'Categoria excluída!',
         'erro': 'Erro na operação.'
     };
 

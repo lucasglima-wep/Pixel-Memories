@@ -1,8 +1,8 @@
 /* Reset básico para evitar que cole nas bordas */
 
 body {
-    padding: 80px;
-    margin: 0;
+    padding: 20px;
+    margin: 60px auto;
 }
 
 .categoria-box {
@@ -103,6 +103,12 @@ body {
 /* Ajuste para celular */
 
 @media (max-width: 600px) {
+    
+    body {
+    padding: 20px;
+    top: 60px;
+}
+
     .item-categoria {
         flex-direction: column; /* No celular, imagem em cima do texto */
         text-align: center;

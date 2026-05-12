@@ -55,9 +55,9 @@ $resultado_fotos = $conn->query($sql);
         <button class="filtro <?php echo !$categoria_selecionada ? 'ativo' : ''; ?>" data-id="0">Todas</button>
 
         <?php
-        $sqlCat = "SELECT * FROM categorias ORDER BY nome ASC";
-        $resCat = $conn->query($sqlCat);
-        while($cat = $resCat->fetch_assoc()) {
+          $sqlCat = "SELECT * FROM categorias ORDER BY nome ASC";
+          $resCat = $conn->query($sqlCat);
+          while($cat = $resCat->fetch_assoc()) {
             $ativo = ($categoria_selecionada == $cat['id']) ? 'ativo' : '';
             echo "<button class='filtro $ativo' data-id='{$cat['id']}'>{$cat['nome']}</button>";
         }
@@ -65,25 +65,35 @@ $resultado_fotos = $conn->query($sql);
     </div>
 
     <!-- GRID DE FOTOS -->
-    <section class="galeria">
-        <?php
-        if ($resultado_fotos && $resultado_fotos->num_rows > 0) {
-            while($foto = $resultado_fotos->fetch_assoc()) {
-        ?>
-            <div class="foto" data-categoria="<?php echo $foto['categoria_id']; ?>">
-                <img src="<?php echo $foto['caminho_arquivo']; ?>" alt="<?php echo htmlspecialchars($foto['titulo']); ?>">
-                <div class="overlay">
-                    <h3><?php echo $foto['titulo']; ?></h3>
-                    <button><i class="fa-solid fa-expand"></i></button>
-                </div>
+  <section class="galeria">
+  <?php
+$sql = "SELECT fotos.*, categorias.nome AS categoria_nome 
+        FROM fotos 
+        INNER JOIN categorias ON fotos.categoria_id = categorias.id";
+$resultado_fotos = $conn->query($sql);
+?>
+
+
+    <?php
+    if ($resultado_fotos && $resultado_fotos->num_rows > 0) {
+        while($foto = $resultado_fotos->fetch_assoc()) {
+    ?>
+        <div class="foto">
+            <img src="<?php echo htmlspecialchars($foto['caminho_arquivo']); ?>" 
+                 alt="<?php echo htmlspecialchars($foto['titulo']); ?>">
+
+            <div class="overlay">
+                <h3><?php echo htmlspecialchars($foto['titulo']); ?></h3>
+                <p><?php echo htmlspecialchars($foto['categoria_nome']); ?></p>
             </div>
-        <?php 
-            }
-        } else {
-            echo "<p style='grid-column:1/-1;text-align:center;padding:50px;opacity:0.5;'>Nenhuma foto encontrada.</p>";
+        </div>
+    <?php  
         }
-        ?>
-    </section>
+    } else {
+        echo "<p style='grid-column:1/-1;text-align:center;padding:50px;opacity:0.5;'>Nenhuma foto encontrada.</p>";
+    }
+    ?>
+</section>
 
     <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox">
@@ -91,7 +101,7 @@ $resultado_fotos = $conn->query($sql);
         <img class="lightbox-img" id="lightbox-img">
     </div>
 
-    <footer>
+    <footer class="footer-principal">
         <p>© 2026 Pixel Memories - Todos os direitos reservados</p>
         <div class="social">
             <a href="https://www.instagram.com/lucasglimasousa12/" target="_blank"><i class="fa-brands fa-instagram"></i></a>

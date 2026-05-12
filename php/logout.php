@@ -1,8 +1,4 @@
 <?php
-/**
- * Script de Logout sincronizado com o sistema de alertas JavaScript
- */
-
 // 1. Inicia a sessão
 session_start();
 

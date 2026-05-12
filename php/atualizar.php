@@ -27,12 +27,16 @@ $stmt->bind_param(
 
 if ($stmt->execute()) {
 
-    header("Location: ../admin.php?status=sucesso");
+    header("Location: ../admin.php?status=editado");
     exit();
 
 } else {
 
     echo "Erro ao atualizar: " . $stmt->error;
 
+    if ($stmt->execute()) {
+        header("Location: ../admin.php?status=editado");
+        exit();
+    }
 }
 ?>
