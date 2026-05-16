@@ -13,6 +13,72 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    
+    <style>
+      
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        
+        .modal-content {
+            background-color: #1e1e1e; 
+            color: #fff;
+            margin: 10vh auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        
+        .modal-content img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Botão de fechar (X) */
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+       
+        .modal-content h2 { margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+        .modal-content p { margin-bottom: 20px; color: #ccc; font-size: 0.95rem; }
+        .modal-content .btn { display: inline-block; width: 100%; box-sizing: border-box; }
+    </style>
 </head>
 
 <body>
@@ -66,7 +132,7 @@
             if ($result && $result->num_rows > 0) {
                 while($cat = $result->fetch_assoc()) {
             ?>
-                    <!-- Card de Categoria -->
+                    
                     <div class="card">
                         <div class="card-img">
                             <img src="<?php echo $cat['imagem']; ?>" alt="<?php echo $cat['nome']; ?>">
@@ -74,7 +140,15 @@
                         <div class="card-info">
                             <h3><?php echo $cat['nome']; ?></h3>
                             <p><?php echo $cat['descricao']; ?></p>
-                            <a class="btn" href="galeria.php?categoria=<?php echo $cat['id']; ?>">Explorar</a>
+                            
+                            
+                            <button class="btn btn-abrir-modal" 
+                                data-id="<?php echo $cat['id']; ?>"
+                                data-nome="<?php echo htmlspecialchars($cat['nome'], ENT_QUOTES); ?>"
+                                data-desc="<?php echo htmlspecialchars($cat['descricao'], ENT_QUOTES); ?>"
+                                data-img="<?php echo htmlspecialchars($cat['imagem'], ENT_QUOTES); ?>">
+                                Explorar
+                            </button>
                         </div>
                     </div>
             <?php
@@ -95,6 +169,66 @@
             <a href="#"><i class="fa-brands fa-github"></i></a>
         </div>
     </footer>
+
+    
+    <div id="categoriaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImg" src="" alt="Imagem da Categoria">
+            <h2 id="modalTitle">Título</h2>
+            <p id="modalDesc">Descrição</p>
+            
+            <a id="modalLink" href="#" class="btn">Ver fotos da categoria</a>
+        </div>
+    </div>
+
+    
+    <script>
+        
+        const modal = document.getElementById("categoriaModal");
+        const closeBtn = document.querySelector(".close-btn");
+        const modalImg = document.getElementById("modalImg");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesc = document.getElementById("modalDesc");
+        const modalLink = document.getElementById("modalLink");
+
+        
+        const botoesAbrir = document.querySelectorAll(".btn-abrir-modal");
+
+        
+        botoesAbrir.forEach(btn => {
+            btn.addEventListener("click", function() {
+                
+                const id = this.getAttribute("data-id");
+                const nome = this.getAttribute("data-nome");
+                const desc = this.getAttribute("data-desc");
+                const img = this.getAttribute("data-img");
+
+                
+                modalTitle.innerText = nome;
+                modalDesc.innerText = desc;
+                modalImg.src = img;
+                
+                
+                modalLink.href = "galeria.php?categoria=" + id;
+
+                
+                modal.style.display = "block";
+            });
+        });
+
+        
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
 
 </body>
 </html>
