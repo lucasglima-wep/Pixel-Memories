@@ -142,6 +142,12 @@ if (erro || status) {
         mensagem.innerText = "Você saiu do sistema com segurança!";
     }
 
+       else if (status === 'admin_criado') {
+        alerta.classList.add('sucesso');
+        alerta.querySelector('i').className = "fa-solid fa-circle-check";
+        mensagem.innerText = "admin criado com sucesso!";
+    }
+
     // 5. Limpar a URL e esconder após 4 segundos
     setTimeout(() => {
         window.history.replaceState({}, document.title, window.location.pathname);

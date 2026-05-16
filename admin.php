@@ -120,8 +120,6 @@ $resultado = $conn->query($sql);
 
 
 
-
-
 <!-- ALERTA -->
 <div id="alerta" class="alerta">
     <i class="fa-solid fa-circle-exclamation"></i>
@@ -140,12 +138,13 @@ $resultado = $conn->query($sql);
         <a href="galeria.php">Galeria</a>
         <a href="admin.php" class="ativo">Admin</a>
         <a href="categories.php">Categorias</a>
+        <a href="cadastro_admin.php">Cadastrar </a>
         <a href="php/logout.php" style="color:#ff6b6b;">
             <i class="fa-solid fa-right-from-bracket"></i>
             Sair
         </a>
     </nav>
-
+    
 </header>
 
 <!-- UPLOAD -->
@@ -382,34 +381,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    /* =========================
-       LOADING UPLOAD
-    ========================= */
+   
+   /* =========================
+   ENVIO SEM RECARREGAR (AJAX)
+========================= */
+const formUpload = document.getElementById('form-upload');
+const loading = document.getElementById('loading');
 
-    const formUpload = document.getElementById('form-upload');
-    const loading = document.getElementById('loading');
+if (formUpload) {
+    formUpload.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Impede a página de recarregar
 
-    if(formUpload){
+        loading.style.display = 'flex';
 
-        formUpload.addEventListener('submit', (e) => {
+        // Captura os dados do formulário (incluindo a imagem)
+        const formData = new FormData(formUpload);
 
-    e.preventDefault();
+        try {
+            // Envia para o PHP via Fetch
+            const response = await fetch('php/upload.php', {
+                method: 'POST',
+                body: formData
+            });
 
-    loading.style.display = 'flex';
+            const resultado = await response.json();
 
-    setTimeout(() => {
+            loading.style.display = 'none';
 
-        formUpload.submit();
+            if (resultado.status === 'sucesso') {
+                exibirAlerta('sucesso', 'Foto enviada com sucesso!');
+                formUpload.reset(); // Limpa o formulário
+                
+                // Opcional: Recarregar apenas a parte das fotos ou dar um refresh suave
+                setTimeout(() => location.reload(), 1500); 
+            } else {
+                exibirAlerta('erro', resultado.mensagem);
+            }
 
-    }, 3000); // 2 segundos mínimos
+        } catch (error) {
+            loading.style.display = 'none';
+            exibirAlerta('erro', 'Falha na conexão com o servidor.');
+        }
+    });
+}
 
-});
+function exibirAlerta(tipo, msgNome) {
+    const mensagens = {
+        'muitopequeno': 'A imagem é muito pequena.',
+        'tamanho': 'Arquivo muito grande.',
+        'formato': 'Use JPG, PNG ou WebP.',
+        'sucesso': 'Foto enviada com sucesso!',
+        'erro': 'Ocorreu um erro.'
+    };
 
+    alerta.style.display = 'flex';
+    if (tipo === 'sucesso') {
+        alerta.classList.add('alerta-sucesso');
+        iconeAlerta.className = 'fa-solid fa-circle-check';
+        iconeAlerta.style.color = '#27ae60';
+        mensagem.innerText = mensagens[msgNome] || msgNome;
+    } else {
+        alerta.classList.add('alerta-erro');
+        iconeAlerta.className = 'fa-solid fa-circle-xmark';
+        iconeAlerta.style.color = '#e74c3c';
+        mensagem.innerText = mensagens[msgNome] || 'Erro inesperado.';
     }
 
+    setTimeout(() => alerta.classList.add('active'), 100);
+    setTimeout(() => {
+        alerta.classList.remove('active');
+        setTimeout(() => alerta.style.display = 'none', 500);
+    }, 4000);
+}
 });
-
-
 
 </script>
 

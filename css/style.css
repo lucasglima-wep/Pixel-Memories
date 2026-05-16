@@ -115,29 +115,11 @@ body {
 /* A Grade de Fotos (CORRIGIDA) */
 .grid-fotos {
     display: flex;
-    flex-wrap: wrap;         /* Permite quebrar linha */
+    flex-wrap: wrap;         
     justify-content: flex-start; /* IMPORTANTE: Mantém o alinhamento à esquerda para evitar o corte da 1ª foto */
     gap: 25px;               /* Espaço entre os cards */
     width: 100%;
     margin-top: 10px;
-}
-
-@media (max-width: 800px) {
-    .grid-fotos {
-        justify-content: center;
-        gap: 15px; /* Diminui um pouco o espaço para ganhar tela */
-        padding: 10px;
-    }
-
-    .card-foto {
-        flex: 1 1 300px; 
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .card-foto img {
-        height: 250px; 
-    }
 }
 
 
@@ -592,7 +574,7 @@ footer p {
 
 .topo-galeria {
     width: 100%;
-    padding: 160px 8% 40px 8%; /* Padding superior maior para compensar o Header fixo */
+    padding: 160px 8% 40px 8%;
     text-align: center;
     background: linear-gradient(to bottom, rgba(0, 255, 255, 0.05), transparent);
     position: relative;
@@ -667,6 +649,7 @@ footer p {
     border-radius: 20px;
     cursor: pointer;
     transition: 0.3s;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .filtro:hover {
@@ -798,53 +781,70 @@ footer p {
     
     /* IMAGEM LIGHTBOX */
     
-    .lightbox-img{
-    max-width:90%;
-    max-height:90vh;
+   
+.lightbox-img {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain; 
     
-    border-radius:20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
     
-    animation:zoom 0.4s ease;
+    animation: zoom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    display: block;
+    margin: auto;
+}
+
+/* BOTÃO FECHAR */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    
+    font-size: 40px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    
+    transition: all 0.3s ease;
+    user-select: none;
+    z-index: 1001;
+}
+
+.close:hover {
+    color: rgb(0, 217, 255);
+    transform: rotate(90deg) scale(1.2); 
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+/* ANIMAÇÃO DE ENTRADA */
+@keyframes zoom {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
     }
-    
-    /* BOTÃO FECHAR */
-    
-    .close{
-    position:absolute;
-    
-    top:30px;
-    right:40px;
-    
-    font-size:35px;
-    
-    color:rgb(255, 255, 255);
-    
-    cursor:pointer;
-    
-    transition:0.3s;
+    to {
+        transform: scale(1);
+        opacity: 1;
     }
-    
-    .close:hover{
-    color:rgb(0, 217, 255);
-    transform:rotate(90deg);
-    }
-    
-    /* ANIMAÇÃO */
-    
-    @keyframes zoom{
-    
-    from{
-    transform:scale(0.7);
-    opacity:0;
-    }
-    
-    to{
-    transform:scale(1);
-    opacity:1;
-    }
-    
-    }
-    
+}
+
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(50px); 
+}
     /* ========================= */
     /* RESPONSIVO */
     /* ========================= */
@@ -941,84 +941,7 @@ footer p {
     cursor:pointer;
 }
 
-    .admin-container{
-display:flex;
-gap:40px;
-padding:120px 8%;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-/* BOX PRINCIPAL */
-
-.admin-box{
-background:#141414;
-padding:30px;
-border-radius:20px;
-width:400px;
-box-shadow:0 0 30px rgba(0,255,255,0.1);
-}
-
-.admin-box h2{
-margin-bottom:10px;
-color:cyan;
-}
-
-.admin-box p{
-color:#aaa;
-margin-bottom:20px;
-}
-
-/* FORM */
-
-.admin-box form{
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.admin-box label{
-font-size:14px;
-color:#ccc;
-}
-
-/* INPUTS */
-
-.admin-box input,
-.admin-box select{
-padding:12px;
-border:none;
-border-radius:10px;
-background:#222;
-color:white;
-outline:none;
-}
-
-/* BOTÃO */
-
-.admin-box button{
-padding:14px;
-border:none;
-border-radius:10px;
-background:cyan;
-color:#000;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-.admin-box button:hover{
-transform:translateY(-3px);
-box-shadow:0 0 20px cyan;
-}
-
-/* STATS */
-
-.admin-stats{
-display:flex;
-flex-direction:column;
-gap:20px;
-}
+    
 
 .stat{
 background:#141414;
@@ -1103,6 +1026,11 @@ font-size:18px;
 }
 
 /* Estilo para Acesso Negado (Laranja/Aviso) */
+.alerta-negado {
+    background-color: #ffb84d;
+    color: #8e5a00;
+    border-color: #ff8000;
+}
 
 
 /* Animações citadas no seu código */
@@ -1118,11 +1046,3 @@ font-size:18px;
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
 }
-
-
-
-
-
-
-
-

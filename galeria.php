@@ -90,7 +90,8 @@ $resultado_fotos = $conn->query($sql);
     <?php  
         }
     } else {
-        echo "<p style='grid-column:1/-1;text-align:center;padding:50px;opacity:0.5;'>Nenhuma foto encontrada.</p>";
+        echo "<p style='grid-column:1/-1;text-align:center;
+        padding:50px;opacity:0.5;'>Nenhuma foto encontrada.</p>";
     }
     ?>
 </section>
@@ -134,28 +135,40 @@ $resultado_fotos = $conn->query($sql);
         lightbox.addEventListener('click', (e) => { if (e.target === lightbox) fecharLightbox(); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharLightbox(); });
 
-        // FILTROS VIA AJAX
-        const botoes = document.querySelectorAll('.filtro');
-        const galeriaGrid = document.querySelector('.galeria');
+     const botoes = document.querySelectorAll('.filtro');
+const galeriaGrid = document.querySelector('.galeria');
 
-        botoes.forEach(btn => {
-            btn.addEventListener('click', function() {
-                botoes.forEach(b => b.classList.remove('ativo'));
-                this.classList.add('ativo');
+botoes.forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove ativo de todos e adiciona no clicado
+        botoes.forEach(b => b.classList.remove('ativo'));
+        this.classList.add('ativo');
 
-                const id = this.dataset.id;
+        const id = this.dataset.id;
 
-                fetch("galeria_ajax.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "categoria_id=" + id
-                })
-                .then(res => res.text())
-                .then(data => {
-                    galeriaGrid.innerHTML = data;
-                });
-            });
+        // Feedback visual: opacidade baixa enquanto carrega
+        galeriaGrid.style.opacity = '0.5';
+
+        fetch("galeria_ajax.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: "categoria_id=" + encodeURIComponent(id) // Uso do encodeURIComponent por segurança
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Erro na rede');
+            return res.text();
+        })
+        .then(data => {
+            galeriaGrid.innerHTML = data;
+            galeriaGrid.style.opacity = '1'; // Volta a opacidade normal
+        })
+        .catch(err => {
+            console.error("Erro ao carregar galeria:", err);
+            galeriaGrid.innerHTML = "<p>Erro ao carregar as fotos. Tente novamente.</p>";
+            galeriaGrid.style.opacity = '1';
         });
+    });
+});
 
     </script>
 </body>

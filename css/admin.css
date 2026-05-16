@@ -1,208 +1,197 @@
+/* =============================================
+   CONFIGURAÇÕES GERAIS E GLOBAIS
+============================================= */
 
-
-/* LOGO */
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
+h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 28px;
+    margin-bottom: 10px;
 }
 
-.logo i{
-    color:#4da3ff;
-    font-size:28px;
+p {
+    color: #aaa;
+    margin-bottom: 25px;
 }
 
-.logo h1{
-    font-size:24px;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
 
-/* MENU */
-.menu{
-    display:flex;
-    gap:25px;
-}
-
-.menu a{
-    color:white;
-    text-decoration:none;
-    font-weight:500;
-    transition:0.3s;
-}
-
-.menu a:hover,
-.menu .ativo{
-    color:#4da3ff;
-}
-
-
-/* ALERTA */
-.alerta-escondido{
-    display:none;
-}
-
-.alerta-exibido{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:25px;
-    font-weight:500;
-}
-
-.erro{
-    background:#3b1111;
-    color:#ff6b6b;
-}
-
-.sucesso{
-    background:#113b1f;
-    color:#55ef88;
-}
-
-/* TÍTULOS */
-h2{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:28px;
-    margin-bottom:10px;
-}
-
-p{
-    color:#aaa;
-    margin-bottom:25px;
-}
-
-/* FORMULÁRIO */
-form{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
-
-label{
-    font-weight:500;
+label {
+    font-weight: 500;
 }
 
 input,
-select{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    background:#242424;
-    color:white;
-    font-size:15px;
-    outline:none;
+select {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #242424;
+    color: white;
+    font-size: 15px;
+    outline: none;
 }
 
 input:focus,
-select:focus{
-    border:2px solid #4da3ff;
+select:focus {
+    border: 2px solid #4da3ff;
 }
 
-/* BOTÃO */
-button{
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:#4da3ff;
-    color:white;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    transition:0.3s;
+button {
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #4da3ff;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-button:hover{
-    background:#2d8cff;
+button:hover {
+    background: #2d8cff;
 }
 
-/* GALERIA E GRID REFINADO */
+/* =============================================
+   LAYOUT PRINCIPAL
+============================================= */
 
-/* A caixa que contém tudo */
-/* 1. O Container Pai (Admin Box) */
+.admin-container {
+    display: flex;
+    gap: 40px;
+    padding: 120px 8%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .admin-box {
-    width: 30%;
-    max-width: 1100px;
+    width: 50%; 
+    max-width: 1200px;
     margin: 20px auto;
-    background: #121212;
-    padding: 30px 15px; /* Padding 0 nas laterais para a galeria encostar se precisar */
+    background: #141414;
+    padding: 30px 90px;
     border-radius: 20px;
     border: 1px solid #2b2b2b;
-    overflow: hidden; 
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+
 }
 
-@media screen and (max-width: 768px) { 
-    .admin-box {
-         width: 100%;
-        padding: 20px 15px; /* Reduz o padding lateral em telas menores */
-    }
-    
-}
-
-/* 2. O Título (Garantindo que ele mantenha o recuo mesmo com a box sem padding lateral) */
 .admin-box h2 {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     margin-bottom: 25px;
-    padding: 0 30px; /* Recuo para o título não colar na borda */
+    padding: 0 30px; 
+    color: cyan;
 }
 
-/* 3. A Grid (Onde a mágica acontece) */
-.grid-fotos {
+.admin-box p {
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.admin-box form {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    
-    /* Snap Scroll */
-    scroll-snap-type: x mandatory;
-    
-    /* ESTA É A SOLUÇÃO: */
-    padding: 10px 30px 20px 30px; /* Padding de 30px nas laterais INTERNAS do scroll */
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* 4. O Card (Ajuste de alinhamento) */
-.card-foto {
-    flex: 0 0 280px; 
-    min-width: 280px; /* Garante que o flex-basis seja respeitado */
-    background: #242424;
-    border-radius: 12px;
-    scroll-snap-align: start; /* Alinha o card no início do padding que criamos */
+.admin-box label {
+    font-size: 14px;
+    color: #ccc;
 }
 
-/* 5. Ajuste na Barra de Rolagem para não flutuar estranho */
-.grid-fotos::-webkit-scrollbar {
-    height: 8px;
-}
-.grid-fotos::-webkit-scrollbar-track {
-    margin: 0 30px; /* Faz a barra de rolagem começar e terminar no mesmo alinhamento das fotos */
-    background: #1a1a1a;
+.admin-box input,
+.admin-box select {
+    padding: 12px;
+    background: #222;
     border-radius: 10px;
 }
 
-.card-foto {
-    flex: 0 0 280px; 
-    background: #000000;
-    border-radius: 12px;
-    scroll-snap-align: start; /* Alinha pelo início para não bugar a primeira foto */
-    
-    /* Impede que o card tente crescer ou diminuir */
-    min-width: 280px;
+.admin-box button {
+    padding: 14px;
+    border-radius: 10px;
+    background: cyan;
+    color: #000;
 }
 
-/* Estilização da Scrollbar (Essencial para o visual) */
+.admin-box button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px cyan;
+    background: cyan;
+}
+
+.admin-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* =============================================
+   CABEÇALHO E MENU
+============================================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo i {
+    color: #4da3ff;
+    font-size: 28px;
+}
+
+.logo h1 {
+    font-size: 24px;
+}
+
+.menu {
+    display: flex;
+    gap: 25px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.menu a:hover,
+.menu .ativo {
+    color: #4da3ff;
+}
+
+/* =============================================
+   GRID DE FOTOS E CARDS
+============================================= */
+
+.grid-fotos {
+    display: flex;
+    flex-wrap: nowrap; 
+    gap: 20px;
+    overflow-x: auto; 
+    padding: 10px 30px 25px 30px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+}
+
+/* Scrollbar Customizada */
 .grid-fotos::-webkit-scrollbar {
-    height: 8px; /* Altura da barra horizontal */
+    height: 8px; 
 }
 
 .grid-fotos::-webkit-scrollbar-track {
+    margin: 0 30px; 
     background: #1a1a1a;
     border-radius: 10px;
 }
@@ -210,21 +199,21 @@ button:hover{
 .grid-fotos::-webkit-scrollbar-thumb {
     background: #4da3ff;
     border-radius: 10px;
-    border: 2px solid #1a1a1a; /* Cria um efeito de respiro ao redor do thumb */
+    border: 2px solid #1a1a1a; 
 }
 
 .grid-fotos::-webkit-scrollbar-thumb:hover {
     background: #3580d5;
 }
 
-/* Ajuste no Card */
 .card-foto {
     flex: 0 0 280px; 
+    min-height: 230px; 
     background: #242424;
     border-radius: 12px;
-    transition: all 0.3s ease;
-    overflow: hidden; /* Garante que a imagem respeite o border-radius do card */
     border: 1px solid #333;
+    overflow: hidden; 
+    transition: all 0.3s ease;
     scroll-snap-align: start; 
 }
 
@@ -243,333 +232,335 @@ button:hover{
 }
 
 .card-foto:hover img {
-    scale: 1.05; /* Efeito de zoom leve na imagem ao passar o mouse */
-}
-/* INFO */
-.card-info{
-    padding:18px;
+    scale: 1.05; 
 }
 
-.card-info h3{
-    font-size:20px;
-    margin-bottom:8px;
+.card-info {
+    padding: 18px;
 }
 
-.card-info p{
-    color:#c0baba;
-    margin-bottom:18px;
+.card-info h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
 }
 
-/* AÇÕES */
-.acoes{
-    display:flex;
-    gap:12px;
+.card-info p {
+    color: #c0baba;
+    margin-bottom: 18px;
+}
+
+.card-contador {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #202020;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 40px; 
+    margin-bottom: 20px;
+    border: 1px solid #2b2b2b;
+}
+
+.card-contador i {
+    font-size: 30px;
+    color: #4da3ff;
+}
+
+.card-contador h3 {
+    font-size: 28px;
+    margin: 0;
+}
+
+.card-contador p {
+    margin: 0;
+    color: #aaa;
+}
+
+/* =============================================
+   BOTÕES DE AÇÃO E ANIMAÇÕES
+============================================= */
+
+.acoes {
+    display: flex;
+    gap: 12px;
 }
 
 .btn-editar,
-.btn-excluir{
-    flex:1;
-    padding:12px;
-    border-radius:12px;
-    text-align:center;
-    text-decoration:none;
-    color:white;
-    font-weight:600;
-    transition:0.3s;
+.btn-excluir {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
-.btn-editar{
-    background:#3498db;
+.btn-editar {
+    background: #3498db;
 }
 
-.btn-editar:hover{
-    background:#2585c7;
+.btn-editar:hover {
+    background: #2585c7;
 }
 
-.btn-excluir{
-    background:#e74c3c;
+.btn-excluir {
+    background: #e74c3c;
 }
 
-.btn-excluir:hover{
-    background:#cf3e2f;
+.btn-excluir:hover {
+    background: #cf3e2f;
 }
 
-/* RESPONSIVO */
-@media(max-width:768px){
-
-    .header{
-        flex-direction:column;
-        gap:20px;
-        text-align:center;
-    }
-
-    .menu{
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-
-    .admin-box{
-        padding:25px;
-    }
+.anim-delete {
+    position: relative;
+    overflow: hidden;
 }
 
-/* BOTÃO EXCLUIR COM ANIMAÇÃO */
-.anim-delete{
-    position:relative;
-    overflow:hidden;
+.anim-delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.6);
 }
 
-/* efeito hover */
-.anim-delete:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 15px rgba(231, 76, 60, 0.6);
+.anim-delete:active {
+    transform: scale(0.92);
 }
 
-/* efeito clique */
-.anim-delete:active{
-    transform:scale(0.92);
+/* =============================================
+   ALERTAS E MODAIS
+============================================= */
+
+.alerta-escondido {
+    display: none;
 }
 
-/* ALERTA CENTRAL NA TELA */
-.alerta{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%) scale(0.8);
-    background:#1e1e1e;
-    padding:20px 25px;
-    border-radius:15px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-weight:600;
-    color:white;
-    box-shadow:0 10px 30px rgba(0,0,0,0.5);
-    opacity:0;
-    pointer-events:none;
-    transition:0.3s ease;
-    z-index:9999;
+.alerta-exibido {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    font-weight: 500;
 }
 
-/* quando aparece */
-.alerta.show{
-    opacity:1;
-    transform:translate(-50%, -50%) scale(1);
+.erro {
+    background: #3b1111;
+    color: #ff6b6b;
 }
 
-/* erro */
-.alerta.erro{
-    background:#3b1111;
-    color:#ff6b6b;
+.sucesso {
+    background: #113b1f;
+    color: #55ef88;
 }
 
-/* sucesso */
-.alerta.sucesso{
-    background:#113b1f;
-    color:#55ef88;
+/* Alerta flutuante centralizado */
+.alerta {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: #1e1e1e;
+    padding: 20px 25px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s ease;
+    z-index: 9999;
 }
 
-/* animação do ícone */
-.alerta i{
-    font-size:20px;
+.alerta.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 
-.modal{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.7);
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+.alerta.erro {
+    background: #3b1111;
+    color: #ff6b6b;
 }
 
-.modal-content{
-    background:#1e1e1e;
-    padding:25px;
-    border-radius:15px;
-    width:90%;
-    max-width:400px;
-    animation:zoom 0.3s ease;
+.alerta.sucesso {
+    background: #113b1f;
+    color: #55ef88;
 }
 
-@keyframes zoom{
-    from{transform:scale(0.7); opacity:0;}
-    to{transform:scale(1); opacity:1;}
+.alerta i {
+    font-size: 20px;
 }
 
-.fechar{
-    float:right;
-    font-size:25px;
-    cursor:pointer;
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #1e1e1e;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    animation: zoom 0.3s ease;
+}
+
+@keyframes zoom {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.fechar {
+    float: right;
+    font-size: 25px;
+    cursor: pointer;
 }
 
 .modal-content input,
-.modal-content select{
-    width:100%;
-    margin-top:10px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#2a2a2a;
-    color:white;
+.modal-content select {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #2a2a2a;
+    color: white;
 }
 
-.modal-content button{
-    margin-top:15px;
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#3498db;
-    color:white;
-    cursor:pointer;
+.modal-content button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
 }
-
-
-
-.card-contador{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    background:#202020;
-    padding:20px;
-    border-radius:15px;
-    margin-top:40px; 
-    margin-bottom:20px;
-    border:1px solid #2b2b2b;
-}
-.card-contador i{
-    font-size:30px;
-    color:#4da3ff;
-}
-
-.card-contador h3{
-    font-size:28px;
-    margin:0;
-}
-
-.card-contador p{
-    margin:0;
-    color:#aaa;
-}
-
-
-
-/* =========================
-   LOADING UPLOAD
-========================= */
-
-#loading{
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.95);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:99999;
-}
-
-.loader-box{
-    text-align:center;
-    color:#fff;
-}
-
-.spinner{
-    width:80px;
-    height:80px;
-    border:6px solid rgba(255,255,255,0.1);
-    border-top:6px solid cyan;
-    border-radius:50%;
-    animation: girar 1s linear infinite;
-    margin:0 auto 20px auto;
-    box-shadow:0 0 25px cyan;
-}
-
-.loader-box h2{
-    font-size:24px;
-    margin-bottom:10px;
-}
-
-.loader-box p{
-    color:#aaa;
-}
-
-@keyframes girar{
-    100%{
-        transform:rotate(360deg);
-    }
-}
-
 
 /* =============================================
-   AJUSTES DE RESPONSIVIDADE COMPLETA
-   ============================================= */
+   LOADING / UPLOAD
+============================================= */
 
-/* 1. TABLETS (Ecrãs até 1024px) */
-@media (max-width: 1024px) {
-    .admin-box {
-        width: 80%; /* Aumenta a largura em relação ao desktop */
-    }
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
 }
 
-/* 2. SMARTPHONES (Ecrãs até 768px) */
+.loader-box {
+    text-align: center;
+    color: #fff;
+}
+
+.spinner {
+    width: 80px;
+    height: 80px;
+    border: 6px solid rgba(255, 255, 255, 0.1);
+    border-top: 6px solid cyan;
+    border-radius: 50%;
+    animation: girar 1s linear infinite;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 0 25px cyan;
+}
+
+.loader-box h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.loader-box p {
+    color: #aaa;
+}
+
+@keyframes girar {
+    100% { transform: rotate(360deg); }
+}
+
+/* =============================================
+   MEDIA QUERIES (RESPONSIVIDADE)
+============================================= */
+
+/* SMARTPHONES E TABLETS MENORES (Até 768px) */
 @media (max-width: 768px) {
-    .admin-box {
-        width: 95%; /* Quase ecrã total para não perder espaço */
-        padding: 20px 0; /* Remove padding lateral para as fotos encostarem nas bordas se necessário */
+    
+    body {
+        padding: 80px 0 20px 0;
     }
 
-    .admin-box h2, .admin-box p {
-        padding: 0 20px; /* Mantém o texto alinhado mas longe da borda */
+    .admin-container {
+        flex-direction: column;
+        gap: 12px;  
+    }
+    
+    .admin-box {
+        width: 95%;
+        padding: 20px 30px;
+        margin: 10px auto; 
     }
 
     .grid-fotos {
-        padding: 10px 20px 20px 20px; /* Reduz o recuo lateral das fotos */
+        flex-wrap: nowrap; 
+        overflow-x: auto;  
         gap: 15px;
+        padding: 10px 20px 25px 20px;
+        -webkit-overflow-scrolling: touch;
     }
 
     .card-foto {
-        flex: 0 0 250px; /* Cards ligeiramente menores no mobile */
-        min-width: 250px;
-    }
-
-    .card-contador {
-        flex-direction: column; /* Ícone em cima do texto no mobile */
-        text-align: center;
-        margin: 20px 15px;
+        flex: 0 0 260px; 
+        min-width: 260px;
     }
 }
 
-/* 3. TELEMÓVEIS PEQUENOS (Até 480px) */
+/* TELEMÓVEIS PEQUENOS (Até 480px) */
 @media (max-width: 480px) {
     .header h1 {
         font-size: 20px;
     }
 
-    .card-foto {
-        flex: 0 0 85vw; /* O card ocupa 85% da largura da vista do telemóvel */
-        min-width: 85vw;
+    .grid-fotos {
+        padding: 10px 15px 25px 15px;
     }
 
+   .card-foto {
+        flex: 0 0 250px; 
+        min-width: 250px;
+        width: 100%; 
+   }
     .acoes {
-        flex-direction: column; /* Botões Editar/Excluir um por cima do outro */
+        flex-direction: column; 
         gap: 8px;
     }
 
-    /* Alerta fixo no topo no mobile para ser mais visível */
+    /* Ajuste do Alerta para mobile */
     .alerta {
         width: 90%;
         top: 20px;
+        left: 50%;
         transform: translate(-50%, 0) scale(0.9);
     }
-    
+
     .alerta.show {
         transform: translate(-50%, 0) scale(1);
     }

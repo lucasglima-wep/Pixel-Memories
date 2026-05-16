@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    // Note o final da linha: ?erro=acesso_negado
+    header("Location: login.html?erro=acesso_negado"); 
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 

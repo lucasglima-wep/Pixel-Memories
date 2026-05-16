@@ -1,19 +1,21 @@
 <?php
+// Exibir erros apenas para debug (remover em produção)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
 
-// 2. Conexão e Segurança de Acesso
+// 1. Conexão
 include "conexao.php"; 
 
+// 2. Segurança - Resposta JSON em vez de redirecionamento
 if (!isset($_SESSION['logado'])) {
-    header("Location: ../login.html");
+    echo json_encode(['status' => 'erro', 'mensagem' => 'Acesso negado']);
     exit();
 }
 
-// 3. Verifica se o formulário foi enviado corretamente
+// 3. Verifica se o formulário foi enviado
 if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
 
     $titulo    = trim($_POST['titulo']);
@@ -22,26 +24,25 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
     $tmp_name  = $_FILES['foto']['tmp_name'];
     $nome_orig = $_FILES['foto']['name'];
 
-    // --- VALIDAÇÕES DE TAMANHO ---
-    $tamanho_minimo = 10 * 1024; // 10 KB
-    $tamanho_maximo = 20 * 1024 * 1024; // 20 MB
+    // --- VALIDAÇÕES ---
+    $tamanho_minimo = 10 * 1024; 
+    $tamanho_maximo = 20 * 1024 * 1024; 
 
     if ($tamanho < $tamanho_minimo) {
-        header("Location: ../admin.php?erro=muitopequeno");
+        echo json_encode(['status' => 'erro', 'mensagem' => 'muitopequeno']);
         exit();
     }
 
     if ($tamanho > $tamanho_maximo) {
-        header("Location: ../admin.php?erro=tamanho");
+        echo json_encode(['status' => 'erro', 'mensagem' => 'tamanho']);
         exit();
     }
 
-    // --- VALIDAÇÃO DE EXTENSÃO ---
     $ext = strtolower(pathinfo($nome_orig, PATHINFO_EXTENSION));
     $permitidos = ['jpg', 'jpeg', 'png', 'webp'];
 
     if (!in_array($ext, $permitidos)) {
-        header("Location: ../admin.php?erro=formato");
+        echo json_encode(['status' => 'erro', 'mensagem' => 'formato']);
         exit();
     }
 
@@ -72,11 +73,10 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
     }
 
     if (!$imagem_original) {
-        header("Location: ../admin.php?erro=imagem");
+        echo json_encode(['status' => 'erro', 'mensagem' => 'imagem']);
         exit();
     }
 
-    // Aplica entrelaçamento (progressivo) e salva como JPG comprimido
     imageinterlace($imagem_original, true);
     
     if (imagejpeg($imagem_original, $caminho_final, 60)) {
@@ -84,7 +84,7 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
 
         $caminho_bd = "fotos/" . $novo_nome;
 
-        // --- BANCO DE DADOS (PREPARED STATEMENT) ---
+        // --- BANCO DE DADOS ---
         $sql = "INSERT INTO fotos (titulo, categoria_id, caminho_arquivo) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
 
@@ -92,29 +92,22 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
             $stmt->bind_param("sis", $titulo, $categoria, $caminho_bd);
             
             if ($stmt->execute()) {
-                header("Location: ../admin.php?status=sucesso");
+                // SUCESSO REAL
+                echo json_encode(['status' => 'sucesso']);
             } else {
-                header("Location: ../admin.php?erro=bd");
+                echo json_encode(['status' => 'erro', 'mensagem' => 'bd']);
             }
             $stmt->close();
         } else {
-            header("Location: ../admin.php?erro=sql_prepare");
+            echo json_encode(['status' => 'erro', 'mensagem' => 'sql_prepare']);
         }
-        exit();
-
     } else {
-        header("Location: ../admin.php?erro=compressao");
-        exit();
+        echo json_encode(['status' => 'erro', 'mensagem' => 'compressao']);
     }
-    
-    } else {
-        header("Location: ../admin.php?status=edi");
-        exit();
-    }
+    exit();
 
-//  else {
-//     // Se caiu aqui, ou o arquivo é muito grande para o servidor ou nada foi enviado
-//     header("Location: ../admin.php?erro=vazio");
-//     exit();
-// }
-?>
+} else {
+    // Caso nenhum arquivo tenha sido enviado ou erro de upload
+    echo json_encode(['status' => 'erro', 'mensagem' => 'vazio']);
+    exit();
+}
